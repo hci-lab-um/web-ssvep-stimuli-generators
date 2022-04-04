@@ -1,0 +1,68 @@
+
+<!DOCTYPE HTML>
+
+<html>
+  <title>CSS SSVEP Stimulator</title>
+  <head>
+    <meta content = "text/html;charset=utf-8" http-equiv="Content-Type">
+    <meta content = "utf-8" http-equiv="encoding">
+    <meta name = "viewport" content="width=device-width, initial-scale=1">
+    
+    <script defer src = "css_script.js"></script>
+    
+    <link rel = "stylesheet" type = "text/css" href = "bootstrap.css" />
+    <link rel = "stylesheet" type = "text/css" href = "css_style.css" /> 
+
+
+  </head>
+
+<body>
+  <div id = "buttonDiv" class = "container-fluid">
+      <!--Setting up four flickering on-screen stimuli -->
+      <div class = "row my-lg-4 my-sm-0 mx-lg-1 mx-sm-0">
+        <div class = "col-3 mr-lg-4 mr-sm-0">
+          <button type="button" id="button1" class="SSVEP" data-frequency="6.67" data-dark-color="black" data-light-color="white">A B C</br>D E F</br>G H I</button>
+        </div>
+
+        <div class = "col-3 mr-lg-4 mr-sm-0">
+          <button type="button" id="button2" class="SSVEP" data-frequency="20" data-dark-color="black" data-light-color="white">J K L</br>M N O</br>P Q R</button>
+        </div>
+
+        <div class = "col-3 mr-lg-4 mr-sm-0">
+          <button type="button" id="button3" class="SSVEP" data-frequency="8.57" data-dark-color="black" data-light-color="white">S T U</br>V W X</br>Y Z _</button>
+        </div>
+      </div>
+
+      <div class = "row my-lg-3 my-sm-0 mx-lg-1 mx-sm-0">
+        <div class = "col-9 my-auto">
+          <form name = "submitForm">
+                <input type="text" class="sentenceArea" id="txtToType" value="HELLO" readonly>
+                <input type="text" id="txtOutput" readonly>
+          </form>
+        </div>
+
+        <div class = "col-3 text-right">
+          <button type="button" id="button4" class="SSVEP" data-frequency="6.67" data-dark-color="black" data-light-color="white">Delete</button>
+        </div>
+      </div>
+
+
+      <div class = "row my-lg-4 my-sm-0 mx-lg-1 mx-sm-0">   
+        <div class = "col-3 mr-lg-4 mr-sm-0">
+          <button type="button" id="button5" class="SSVEP" data-frequency="12" data-dark-color="black" data-light-color="white">Word1</button>
+        </div>
+
+        <div class = "col-3 mr-lg-4 mr-sm-0">
+          <button type="button" id="button6" class="SSVEP" data-frequency="15" data-dark-color="black" data-light-color="white">Word2</button>
+        </div>
+
+        <div class = "col-3 mr-lg-4 mr-sm-0">
+          <button type="button" id="button7" class="SSVEP" data-frequency="6.67" data-dark-color="black" data-light-color="white">Word3</button>
+        </div>
+      </div>
+
+ </div>
+
+
+</body>
+</html>

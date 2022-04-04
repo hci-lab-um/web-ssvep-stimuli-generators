@@ -1,0 +1,72 @@
+<!DOCTYPE HTML>
+
+<html>
+  <title>CSS SSVEP Stimulator</title>
+  <head>
+    <meta content = "text/html;charset=utf-8" http-equiv="Content-Type">
+    <meta content = "utf-8" http-equiv="encoding">
+    <meta name = "viewport" content="width=device-width, initial-scale=1">
+    
+    <!--defer these & remove window.onload--> 
+    <script defer type="text/javascript" src="decimal.min.js"></script>
+    <script defer type="text/javascript" src = "css_script.js"></script>
+
+    <link rel="icon" type="image/png" href="favicon.png" />
+
+    <link rel = "stylesheet" type = "text/css" href = "bootstrap.css" />
+    <link rel = "stylesheet" type = "text/css" href = "css_style.css" /> 
+    
+    <style type="text/css"></style>
+  </head>
+
+<body>
+  <div id = "buttonDiv" class = "container-fluid">
+      <!--Setting up four flickering on-screen stimuli -->
+      <div class = "row my-lg-4 my-sm-0 mx-lg-1 mx-sm-0">
+        <div class = "col-3 mr-lg-4 mr-sm-0">
+          <button type="button" id="button1" class="SSVEP" data-frequency="6.67" data-dark-color="black" data-light-color="white" data-phase-shift="0">A B C</br>D E F</br>G H I</button>
+        </div>
+
+        <div class = "col-3 mr-lg-4 mr-sm-0">
+          <button type="button" id="button2" class="SSVEP" data-frequency="7" data-dark-color="black" data-light-color="white" data-phase-shift="0">J K L</br>M N O</br>P Q R</button>
+        </div>
+
+        <div class = "col-3 mr-lg-4 mr-sm-0">
+          <button type="button" id="button3" class="SSVEP" data-frequency="8.57" data-dark-color="black" data-light-color="white" data-phase-shift="0">S T U</br>V W X</br>Y Z _</button>
+        </div>
+      </div>
+
+      <div class = "row my-lg-3 my-sm-0 mx-lg-1 mx-sm-0">
+        <div class = "col-9 my-auto">
+          <form name = "submitForm">
+                <input type="text" class="sentenceArea" id="txtToType" value="HELLO" readonly>
+                <input type="text" id="txtOutput" readonly>
+          </form>
+        </div>
+
+        <!--data-phase-shift should be defined in terms of pi-->
+        <div class = "col-3 text-right">
+          <button type="button" id="button4" class="SSVEP" data-frequency="12" data-light-color="white" data-phase-shift="0">Delete</button>
+        </div>
+      </div>
+
+
+      <div class = "row my-lg-4 my-sm-0 mx-lg-1 mx-sm-0">   
+        <div class = "col-3 mr-lg-4 mr-sm-0">
+          <button type="button" id="button5" class="SSVEP" data-frequency="12" data-dark-color="black" data-light-color="white" data-phase-shift="0">Word1</button>
+        </div>
+
+        <div class = "col-3 mr-lg-4 mr-sm-0">
+          <button type="button" id="button6" class="SSVEP" data-frequency="11" data-dark-color="black" data-light-color="white" data-phase-shift="0">Word2</button>
+        </div>
+
+        <div class = "col-3 mr-lg-4 mr-sm-0">
+          <button type="button" id="button7" class="SSVEP" data-frequency="9" data-dark-color="black" data-light-color="white" data-phase-shift="0">Word3</button>
+        </div>
+      </div>
+
+ </div>
+
+
+</body>
+</html>

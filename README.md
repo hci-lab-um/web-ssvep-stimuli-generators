@@ -9,6 +9,16 @@ To run a specific library, the stimulator's files must be served locally, e.g. u
 
 ## Generating on-page stimuli
 
+There are 4 stimuli generators in this repository, `CSS+Square Wave Approximation`, `CSS+Constant Period`, `WebGL+Square Wave Approximation` and `WebGL+Constant Period`.
+
+After importing the respective script into your HTML document, you can create any number of stimuli on the page using the following `data-*` attributes:
+
+1. `data-frequency`: specifying the SSVEP stimulus frequency
+2. `data-dark-color` and `data-light-color`: specifying the alternating colors for the SSVEP stimulus
+3. `data-phase-shift`: specifying the phase shift (delay) for the SSVEP stimulus
+
+Stimuli can be defined as follows:
+
 ``` 
    <button type="button" id="button1" data-frequency="6.67" data-dark-color="black" data-light-color="white" data-phase-shift="0">Content</button>
    <button type="button" id="button2" data-frequency="7" data-dark-color="black" data-light-color="white" data-phase-shift="0">Content</button>

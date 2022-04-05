@@ -1,16 +1,16 @@
 {
   "name": "ssvep-stimuli",
   "version": "0.0.0",
-  "description": "Steady-State Visually Evoked Potentials on the Browser",
+  "description": "A library for generating SSVEP stimuli on the browser",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
   "types": "dist/src/index.d.ts",
   "files": [
     "dist"
   ],
-  "repository": "https://github.com/garrettmflynn/hegduino",
-  "author": "Garrett Flynn <garrettmflynn@gmail.com>",
-  "license": "AGPL-3.0-or-later",
+  "repository": "https://github.com/hci-lab-um/web-ssvep-stimuli-generators",
+  "author": "Alison Camilleri, Garrett Flynn <garrettmflynn@gmail.com>",
+  "license": "GPL-3.0-or-later",
   "scripts": {
     "build": "rollup -c && tsc"
   },

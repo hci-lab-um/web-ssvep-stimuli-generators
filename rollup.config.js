@@ -57,7 +57,7 @@ const config = {
     // summary(),
     // Optional: copy any static assets to build directory
     copy({
-      patterns: ['../src/styles/**/*'],
+      patterns: ['../src/**/*.css'],
     }),
     // Support Typescript
   typescript({ 

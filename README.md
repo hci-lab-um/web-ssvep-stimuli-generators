@@ -10,6 +10,18 @@ Supervisory team:
 - [Dr Chris Porter](https://www.um.edu.mt/profile/chrisporter) - Department of Computer Information Systems - Faculty of ICT
 - [Dr Tracey Camilleri](https://www.um.edu.mt/profile/traceycamilleri) - Department of Systems & Control Engineering - Faculty of Engineering
 
+## Library Progress (Garrett)
+### Improvements
+- Allow users to specify arbitrary elements to use as stimuli (rather than class annotation and using querySelector).
+- Removed loose global variables
+- Minimized redundant code (e.g. calculateRefreshRate ) and moved to `src/common.js` and the `index.js` files for each subdirectory.
+- Converted to ES6 import / export syntax to allow developers to apply library code when they wish to
+
+### Issues
+- ssvep.css.start('approximation', elements, attributes) not working.
+- ssvep.webgl.start('periodic', elements, attributes) not working.
+- ssvep.webgl.start('approximation', elements, attributes) not working.
+
 ## Usage
 To run a specific library, the stimulator's files must be served locally, e.g. using Microsoft Internet Information Services (IIS). ```http://localhost``` should be used as the first part of the web address to launch the library's relevant HTML file within the browser.
 
@@ -52,10 +64,3 @@ You can then select your HTML elements from the page (and optionally assign thei
 
 </script>
 ```
-
-
-## Library Improvements
-- Allow users to specify arbitrary elements to use as stimuli (rather than class annotation and using querySelector).
-- Removed loose global variables
-- Minimized redundant code (e.g. calculateRefreshRate ) and moved to `src/common.js` and the `index.js` files for each subdirectory.
-- Converted to ES6 import / export syntax to allow developers to apply library code when they wish to

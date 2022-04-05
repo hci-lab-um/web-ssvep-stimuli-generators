@@ -4,6 +4,10 @@ CSS and WebGL were adopted to implement four cross-platform Steady State Visuall
 
 These libraries were developed by Alison Camilleri to fulfill part of the requirements for the award of a Master of Science in Computer Information Systems degree.
 
+Supervisory team:
+- [Dr Chris Porter](https://www.um.edu.mt/profile/chrisporter) - Department of Computer Information Systems - Faculty of ICT
+- [Dr Tracey Camilleri](https://www.um.edu.mt/profile/traceycamilleri) - Department of Systems & Control Engineering - Faculty of Engineering
+
 ## Usage
 To run a specific library, the stimulator's files must be served locally, e.g. using Microsoft Internet Information Services (IIS). ```http://localhost``` should be used as the first part of the web address to launch the library's relevant HTML file within the browser.
 

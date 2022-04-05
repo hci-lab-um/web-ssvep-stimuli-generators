@@ -14,8 +14,8 @@ There are 4 stimuli generators in this repository, `CSS+Square Wave Approximatio
 After importing the respective script into your HTML document, you can create any number of stimuli on the page using the following `data-*` attributes:
 
 1. `data-frequency`: specifying the SSVEP stimulus frequency
-2. `data-dark-color` and `data-light-color`: specifying the alternating colors for the SSVEP stimulus
-3. `data-phase-shift`: specifying the phase shift (delay) for the SSVEP stimulus
+2. `data-light-color`: specifying the color of the SSVEP stimulus (N.B. `data-dark-color` defaults to `transparent`)
+3. `data-phase-shift`: specifying the phase shift (frames delay) for the SSVEP stimulus
 
 Stimuli can be defined as follows:
 

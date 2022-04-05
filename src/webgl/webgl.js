@@ -30,14 +30,14 @@ var positionBuffer = setUpBuffer(gl);
 
 const isPowerOfTwo = dimension => (Math.log(dimension) / Math.log(2)) % 1 === 0;
 
-function initWebGlRenderingComponents(darkCanvas, lightCanvas)
+export function initWebGlRenderingComponents(darkCanvas, lightCanvas)
 {	
 	gl.useProgram(shaderProgram);
 
-	var darkTexCoordBuffer = setUpBuffer();
+	var darkTexCoordBuffer = setUpBuffer(gl);
 	var darkTexture = setUpTexture(darkCanvas);
 
-	var lightTexCoordBuffer = setUpBuffer();
+	var lightTexCoordBuffer = setUpBuffer(gl);
 	var lightTexture = setUpTexture(lightCanvas);
 
 	gl.enableVertexAttribArray(positionLocation);
@@ -54,7 +54,7 @@ function initWebGlRenderingComponents(darkCanvas, lightCanvas)
 			};
 }
 
-function setUpOffScreenCanvases(darkColour, lightColour)
+export function setUpOffScreenCanvases(darkColour, lightColour)
 {
 	// off screen canvases
 	var lightOffScreenCanvas = document.createElement("canvas");
@@ -138,7 +138,7 @@ function setUpTexture(offScreenCanvas)
 	return texture;
 }
 
-function setStimulusColour(renderingInfo)
+export function setStimulusColour(renderingInfo)
 {	
  
  	resizeCanvasToDisplaySize(gl.canvas);

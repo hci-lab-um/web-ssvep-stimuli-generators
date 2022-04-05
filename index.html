@@ -1,0 +1,124 @@
+<!DOCTYPE HTML>
+
+<html>
+<title>CSS SSVEP Stimulator</title>
+
+<head>
+  <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+  <meta content="utf-8" http-equiv="encoding">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="stylesheet" type="text/css" href="./bootstrap.css" />
+  <link rel="stylesheet" type="text/css" href="./src/style.css" />
+</head>
+
+<body>
+
+  <div id="options">
+    <h4>SSVEP Options</h4>
+    <button id="css_periodic">CSS Periodic</button>
+    <button id="css_approximation">CSS Approximation</button>
+    <button id="webgl_periodic">WebGL Periodic</button>
+    <button id="webgl_approximation">WebGL Approximation</button>
+  </div>
+  <canvas id="drawing_canvas"></canvas>
+  <div id="content">
+
+    <div id="buttonDiv" class="container-fluid">
+
+      <div class="row my-lg-4 my-sm-0 mx-lg-1 mx-sm-0">
+        <div class="col-3 mr-lg-4 mr-sm-0">
+          <button class="SSVEP">A B C</br>D
+            E F</br>G H I</button>
+        </div>
+
+        <div class="col-3 mr-lg-4 mr-sm-0">
+          <button class="SSVEP">J K L</br>M
+            N O</br>P Q R</button>
+        </div>
+
+        <div class="col-3 mr-lg-4 mr-sm-0">
+          <button class="SSVEP">S T U</br>V
+            W X</br>Y Z _</button>
+        </div>
+      </div>
+
+      <div class="row my-lg-3 my-sm-0 mx-lg-1 mx-sm-0">
+        <div class="col-9 my-auto">
+          <form name="submitForm">
+            <input type="text" class="sentenceArea" id="txtToType" value="HELLO" readonly>
+            <input type="text" id="txtOutput" readonly>
+          </form>
+        </div>
+
+        <div class="col-3 text-right">
+          <button class="SSVEP">Delete</button>
+        </div>
+      </div>
+
+
+      <div class="row my-lg-4 my-sm-0 mx-lg-1 mx-sm-0">
+        <div class="col-3 mr-lg-4 mr-sm-0">
+          <button class="SSVEP">Word1</button>
+        </div>
+
+        <div class="col-3 mr-lg-4 mr-sm-0">
+          <button class="SSVEP">Word2</button>
+        </div>
+
+        <div class="col-3 mr-lg-4 mr-sm-0">
+          <button class="SSVEP">Word3</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+</body>
+
+<script defer type="module">
+
+  import * as stimuli from "./src/index.js"
+
+  // ------------------------ Arbitrary Elements ------------------------
+  const buttons = document.getElementById('options').querySelectorAll('button')
+  const elements = document.getElementById('buttonDiv').querySelectorAll('button')
+
+  // ------------------------ Attributes ------------------------
+  const attributes = [
+    { frequency: 6.67, "dark-color": "black", "light-color": "white", "phase-shift": "0" },
+    { frequency: 20, darkColor: "black", lightColor: "white", phaseShift: "0" },
+    { frequency: 8.57, darkColor: "black", lightColor: "white", phaseShift: "0" },
+    { frequency: 6.67, darkColor: "black", lightColor: "white", phaseShift: "0" },
+    { frequency: 12, darkColor: "black", lightColor: "white", phaseShift: "0" },
+    { frequency: 15, darkColor: "black", lightColor: "white", phaseShift: "0" },
+    { frequency: 6.67, darkColor: "black", lightColor: "white", phaseShift: "0" },
+  ]
+
+  // ------------------------ Setup Buttons ------------------------
+  buttons.forEach(el => {
+    const [type, method] = el.id.split('_')
+
+    // Set OnClick Event
+    el.onclick = async () => {
+
+      const arr = Array.from(elements)
+
+      // Step 1: Apply Frequencies to Elements
+      arr.forEach((element, i) => {
+        for (let key in attributes[i]) element.setAttribute(`data-${key}`, attributes[i][key])
+      })
+
+      // Step 2: Animate
+      const rate = await stimuli.calculateRefreshRate(10, 10) // QUESTION: Why was this so long before?
+      const thisType = stimuli[type]
+      if (thisType) thisType.start(method, elements, rate)
+      else console.error('This type/method pair does not exist')
+    }
+  })
+
+</script>
+
+
+</html>

@@ -6,12 +6,8 @@
 		<meta content = "text/html;charset=utf-8" http-equiv="Content-Type">
     	<meta content = "utf-8" http-equiv="encoding">
     	<meta name = "viewport" content="width=device-width, initial-scale=1">
-
-		<script defer type="text/javascript" src="webgl_script.js"></script>
-		<script defer type="text/javascript" src="main.js"></script>
-
-		<link rel = "stylesheet" type = "text/css" href = "bootstrap.css" />
-		<link rel = "stylesheet" type = "text/css" href = "webgl_style.css" />
+		<link rel = "stylesheet" type = "text/css" href = "../../../bootstrap.css" />
+		<link rel = "stylesheet" type = "text/css" href = "../../style.css" />
 	</head>
 	<body>
 		<canvas id="drawing_canvas"></canvas>
@@ -63,4 +59,24 @@
 			 </div>
 		</div>	
 	</body>
+
+	<script defer type="module">
+	
+		import * as main from "../index.js"
+
+		const elements = document.getElementById('buttonDiv').querySelectorAll('button')
+		const attributes = [
+			{frequency: 6, "dark-color": "black", "light-color": "white", "phase-shift": "0"}, 
+			{frequency: 7.5, darkColor: "black", lightColor: "white", phaseShift: "0"}, 
+			{frequency: 9, darkColor: "black", lightColor: "white", phaseShift: "0"}, 
+			{frequency: 10.5, darkColor: "black", lightColor: "white", phaseShift: "0"}, 
+			{frequency: 12, darkColor: "black", lightColor: "white", phaseShift: "0"}, 
+			{frequency: 13.5, darkColor: "black", lightColor: "white", phaseShift: "0"}, 
+			{frequency: 15, darkColor: "black", lightColor: "white", phaseShift: "0"}, 
+		]
+
+		main.start('periodic', elements, attributes)
+
+	</script>
+
 </html>

@@ -53,7 +53,52 @@ input[type=text]
     background-color: black;
 }
 
-.SSVEP
-{  
+/* .SSVEP {  
     border: none;
+} */
+
+/* WebGL */
+.SSVEP {  
+    /* border: none; */
+    display: inline-block;
+	width: 15vw;
+	height: 15vw;
+	font-size: 3vw;
+    font-family: Andale Mono, monospace;   
+    font-style: bold;
+    color: blueviolet;
+    text-align: center;
+    outline: none;
+    word-break: break-all;
+    display: table-cell;
+    vertical-align: middle;
+}
+
+canvas {
+	position: absolute;
+	display: block;
+	top: 0;
+	left: 0;
+	z-index: -1;
+	width: 100vw;
+	height: 100vh;
+}
+
+
+/* Added by Garrett Flynn */
+#options { 
+    position: absolute;
+    top: 0;
+    right: 0;
+    color: rgb(38, 38, 38);
+    width: 200px;
+    text-align: left;
+    color: white;
+    padding: 10px;
+}
+
+#options button {
+    width: 100%;
+    height: auto;
+    font-size: 10px;
 }

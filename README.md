@@ -41,8 +41,8 @@ You can then select your HTML elements from the page (and optionally assign thei
 
   const attributes = [
     {frequency: 6.67, "dark-color": "black", "light-color": "white", "phase-shift": "0"}, 
-    {frequency: 7, darkColor: "black", lightColor: "white", phaseShift: "0"}, 
-    {frequency: 8.57, darkColor: "black", lightColor: "white", phaseShift: "0"}
+    {frequency: 7, "dark-color": "black", "light-color": "white", "phase-shift"}, 
+    {frequency: 8.57, "dark-color": "black", "light-color": "white", "phase-shift"}
   ]
 
   ssvep.css.start('periodic', elements, attributes)

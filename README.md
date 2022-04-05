@@ -52,3 +52,10 @@ You can then select your HTML elements from the page (and optionally assign thei
 
 </script>
 ```
+
+
+## Library Improvements
+- Allow users to specify arbitrary elements to use as stimuli (rather than class annotation and using querySelector).
+- Removed loose global variables
+- Minimized redundant code (e.g. calculateRefreshRate ) and moved to `src/common.js` and the `index.js` files for each subdirectory.
+- Converted to ES6 import / export syntax to allow developers to apply library code when they wish to

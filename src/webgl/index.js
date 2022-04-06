@@ -1,15 +1,19 @@
 import * as webgl from  './webgl.js'
 import * as approximation from './approximation/index.js'
 import * as periodic from './periodic/index.js'
+import { calculateRefreshRate } from '../common.js'
 
 const methods = {
     approximation,
     periodic
 }
 
-export function start(method="periodic", elements, screenRefreshRate, canvas) {
+export async function start(method="periodic", elements, canvas, samples=300) {
 
-    if (!(method in methods)) console.error('Method not available for WebGL')
+	const screenRefreshRate = await calculateRefreshRate(10, samples) 
+
+	if (!(method in methods)) throw 'Method not available for WebGL!'
+	else if (!(canvas instanceof HTMLCanvasElement)) throw 'canvas argument is not an HTMLCanvasElement!'
     else {
 	for (var counter = 0; counter < elements.length; counter++) {
 		var darkColour = elements[counter].getAttribute("data-dark-color").split(',').map(Number); 

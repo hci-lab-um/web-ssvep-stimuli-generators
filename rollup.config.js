@@ -5,7 +5,7 @@ import {copy} from '@web/rollup-plugin-copy';
 import resolve from '@rollup/plugin-node-resolve';
 import minifyHTML from 'rollup-plugin-minify-html-literals';
 // import summary from 'rollup-plugin-summary';
-import typescript from 'rollup-plugin-typescript2';
+// import typescript from 'rollup-plugin-typescript2';
 import pkg from './package.json';
 import {terser} from "rollup-plugin-terser";
 import css from "rollup-plugin-import-css";
@@ -17,13 +17,13 @@ import commonjs from '@rollup/plugin-commonjs';
  * @type {import('rollup').RollupOptions}
  */
 const config = {
- input: './src/index.ts', // our source file
+ input: './src/index.js', // our source file
  output: [
   {
     file: pkg.main,
     format: 'umd', // the preferred format
     exports: 'named',
-    name: 'hegduino'
+    name: 'stimuli'
   },
   {
    file: pkg.module,
@@ -37,8 +37,13 @@ const config = {
     commonjs(),
     node_resolve(),
     babel({
-        babelHelpers: 'bundled',
-        plugins: ["@babel/plugin-proposal-class-properties"]
+        babelHelpers: 'runtime',
+        plugins: [
+          "@babel/plugin-proposal-class-properties",
+          ["@babel/plugin-transform-runtime", {
+            "regenerator": true
+          }]
+        ]
     }),
     css(),
     // Resolve bare module specifiers to relative paths
@@ -60,9 +65,9 @@ const config = {
       patterns: ['../src/**/*.css'],
     }),
     // Support Typescript
-  typescript({ 
-   typescript: require('typescript'),
-  }),
+  // typescript({ 
+  //  typescript: require('typescript'),
+  // }),
  ],
 //  preserveEntrySignatures: 'strict',
 }

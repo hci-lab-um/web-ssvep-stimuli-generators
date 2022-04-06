@@ -25,26 +25,36 @@ Stimuli can be defined as follows:
    <button data-frequency="8.57" data-dark-color="0,0,0,1" data-light-color="1,1,1,1" data-phase-shift="0">Content</button>
 ```
 
-You can then select your HTML elements from the page (and optionally assign their attributes from JavaScript): 
+You can then select your HTML elements from the page and begin using them as stimuli:
 ```html
 <script type="module">
 
-  import * as ssvep from "./src/index.js"
+  import * as stimuli from "./src/index.js"
 
    const elements = document.querySelectorAll('button')
 
-  const attributes = [
-    {frequency: 6.67, "dark-color": "0,0,0,1", "light-color": "1,1,1,1", "phase-shift": "0"}, 
-    {frequency: 7, "dark-color": "0,0,0,1", "light-color": "1,1,1,1", "phase-shift"}, 
-    {frequency: 8.57, "dark-color": "0,0,0,1", "light-color": "1,1,1,1", "phase-shift"}
-  ]
-
-  ssvep.css.start('periodic', elements, attributes)
+// ----------- CSS Methods -----------
+  stimuli.css.start('periodic', elements)
 //   ssvep.css.start('approximation', elements, attributes)
-//   ssvep.webgl.start('periodic', elements, attributes, document.body.querySelector('canvas'))
-//   ssvep.webgl.start('approximation', elements, attributes, document.body.querySelector('canvas'))
+
+// ----------- WebGL Methods -----------
+// Note: Requires a third option parameter with a canvas (HTML Canvas) key / value pair
+
+// const canvas = document.body.querySelector('canvas')
+//   ssvep.webgl.start('periodic', elements, attributes, {canvas})
+//   ssvep.webgl.start('approximation', elements, attributes, {canvas})
 
 </script>
+```
+
+Optionally, you may also define more key / value pairs in the `options` argument that can control the calculation of screen refresh rate:
+
+``` javascript
+const options = {
+  canvas, // An HTML Canvas element (for WebGL methods)
+  samples: 100, // For calculation of refresh rate
+}
+
 ```
 
 ## Roadmap

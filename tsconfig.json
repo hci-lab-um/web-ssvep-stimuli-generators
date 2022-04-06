@@ -43,7 +43,10 @@
   "exclude": [
       "**/node_modules/**",
       "**/dist/**",
-      "**/__test__/**"
+      "**/__test__/**",
+      "**/external/**",
+      "rollup.config.js",
+      "src/external/**",
   ],
   "include": ["src"],
 }

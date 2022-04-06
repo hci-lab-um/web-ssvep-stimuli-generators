@@ -8,6 +8,7 @@
   <meta content="utf-8" http-equiv="encoding">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
+  <script src="dist/index.js"></script>
   <link rel="stylesheet" type="text/css" href="./bootstrap.css" />
   <link rel="stylesheet" type="text/css" href="./style.css" />
 </head>
@@ -75,6 +76,7 @@
 <script type="module">
 
   import * as stimuli from "./src/index.js"
+  // import * as stimuli from "./dist/index.esm.js"
 
   // ------------------------ Arbitrary Elements ------------------------
   const buttons = document.getElementById('options').querySelectorAll('button')
@@ -107,9 +109,11 @@
       })
 
       // Step 2: Animate
-      const rate = await stimuli.calculateRefreshRate(10, 10) // QUESTION: Why was this so long before?
       const thisType = stimuli[type]
-      if (thisType) thisType.start(method, elements, rate, canvas)
+      if (thisType) {
+        if (type === 'webgl') thisType.start(method, elements, canvas, 100)
+        else thisType.start(method, elements, 10)
+      }
       else console.error('This type/method pair does not exist')
     }
   })

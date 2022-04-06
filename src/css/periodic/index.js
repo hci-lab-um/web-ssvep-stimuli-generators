@@ -14,6 +14,17 @@ function getStimulusCycleDuration(screenRefreshRate, frequencyToSet) {
 
 export function start(elements, screenRefreshRate) {
 
+  // Insert Stylesheet with Keyframe
+  const styleSheet = document.createElement('style');
+  styleSheet.type = 'text/css';
+  document.head.appendChild(styleSheet);
+  styleSheet.sheet.insertRule(`
+  @keyframes flicker {
+      0% { opacity: 0; }
+      50% { opacity: 1; }
+  }`, styleSheet.length);
+
+  // Start Function
   const seconds = "s ", animationType = " step-end infinite", keyframeName = "flicker";
 
   for (var counter = 0; counter < elements.length; counter++) {

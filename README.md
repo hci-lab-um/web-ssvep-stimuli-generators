@@ -2,24 +2,7 @@
 
 CSS and WebGL were adopted to implement four cross-platform Steady State Visually Evoked Potential (SSVEP) stimuli-generator libraries, whose stimuli are produced via constant-period and square wave approximation techniques, for use in a Brain-Computer Interface (BCI) context. These libraries are configured to run as spellers, yet can easily be altered to cater for a wide range of use cases.
 
-These libraries were developed by Alison Camilleri to fulfill part of the requirements for the award of a Master of Science in Computer Information Systems degree.
-
 More information about these libraries can be found in this peer reviewed publication by the same authors: [Towards Accurate Browser-based SSVEP Stimuli Generation](https://www.scitepress.org/Papers/2020/101594/pdf/index.html).
-
-Supervisory team:
-- [Dr Chris Porter](https://www.um.edu.mt/profile/chrisporter) - Department of Computer Information Systems - Faculty of ICT
-- [Dr Tracey Camilleri](https://www.um.edu.mt/profile/traceycamilleri) - Department of Systems & Control Engineering - Faculty of Engineering
-
-## Library Progress (Garrett)
-### Improvements
-- Allow users to specify arbitrary elements to use as stimuli (rather than class annotation and using querySelector).
-- Removed loose global variables
-- Minimized redundant code (e.g. calculateRefreshRate ) and moved to `src/common.js` and the `index.js` files for each subdirectory.
-- Converted to ES6 import / export syntax to allow developers to apply library code when they wish to
-
-## Issues
-- Position WebGL Canvas behind arbitrary elements across an entire a webpage *with scrolling*.
-- Implement CSS data-dark-color attribute changes
 
 ## Usage
 To run a specific library, the stimulator's files must be served locally, e.g. using Microsoft Internet Information Services (IIS). ```http://localhost``` should be used as the first part of the web address to launch the library's relevant HTML file within the browser.
@@ -58,8 +41,29 @@ You can then select your HTML elements from the page (and optionally assign thei
 
   ssvep.css.start('periodic', elements, attributes)
 //   ssvep.css.start('approximation', elements, attributes)
-//   ssvep.webgl.start('periodic', elements, attributes)
-//   ssvep.webgl.start('approximation', elements, attributes)
+//   ssvep.webgl.start('periodic', elements, attributes, document.body.querySelector('canvas'))
+//   ssvep.webgl.start('approximation', elements, attributes, document.body.querySelector('canvas'))
 
 </script>
 ```
+
+## Roadmap
+- Position WebGL Canvas behind arbitrary elements across an entire a webpage *with scrolling*.
+- Add stop command
+- Implement CSS data-dark-color attribute changes
+
+## Acknowledgments
+### Primary Developer
+These libraries were developed by **Alison Camilleri** to fulfill part of the requirements for the award of a Master of Science in Computer Information Systems degree.
+
+### Supervisory Team
+####  [Dr Chris Porter](https://www.um.edu.mt/profile/chrisporter)
+Department of Computer Information Systems, Faculty of ICT
+
+####  [Dr Tracey Camilleri](https://www.um.edu.mt/profile/traceycamilleri)
+Department of Systems & Control Engineering, Faculty of Engineering
+
+### Other Contributors
+#### [Garrett Flynn](https://github.com/garrettmflynn)
+Founding Partner at [Brains@Play](https://github.com/brainsatplay) 
+  - Refactored the libraries for publication (April 2022)

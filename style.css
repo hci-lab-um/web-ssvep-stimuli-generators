@@ -1,10 +1,4 @@
 
-@keyframes flicker 
-{
-    0% { opacity: 0; }
-    50% { opacity: 1; }
-}
-
 html
 {
     height: 100%;

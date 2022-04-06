@@ -63,8 +63,7 @@ const options = {
 - Implement CSS data-dark-color attribute changes
 
 ## Acknowledgments
-### Primary Developer
-These libraries were developed by **Alison Camilleri** to fulfill part of the requirements for the award of a Master of Science in Computer Information Systems degree.
+These libraries were developed by [Alison Camilleri](https://github.com/alison-camilleri) to fulfill part of the requirements for the award of a Master of Science in Computer Information Systems degree.
 
 ### Supervisory Team
 ####  [Dr Chris Porter](https://www.um.edu.mt/profile/chrisporter)

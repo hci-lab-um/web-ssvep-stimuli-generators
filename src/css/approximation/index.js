@@ -36,6 +36,7 @@ function calculateNumberOfSeconds(stimulusFrequency)
 function modulus(x, y)
 {
     var quotient = x.div(y);
+
     var quotientInt = new Decimal(quotient.toFixed(0));
 
     if ((quotient.minus(quotientInt)).div(quotientInt).abs().toNumber() < Number.EPSILON)
@@ -86,9 +87,9 @@ function calculateStimuliIntensities(stimulusInfo, screenRefreshRate)
         currentInterval = new Decimal(0), 
         keyframeString = "", 
         lastOpacity = 0;
-    const totalNumberOfFrames = new Decimal(noOfSeconds).times(screenRefreshRate).ceil().toNumber(), 
-          keyframeInterval = new Decimal(100).div(new Decimal(totalNumberOfFrames));
+    const totalNumberOfFrames = new Decimal(noOfSeconds).times(screenRefreshRate).ceil().toNumber(), keyframeInterval = new Decimal(100).div(new Decimal(totalNumberOfFrames));
        
+
     for (var frame = 0; frame < totalNumberOfFrames; frame ++)
     {
         var squareWaveResult = generateSquareWave(new Decimal(period).times(stimulusInfo.stimulusFrequency)
@@ -111,10 +112,8 @@ function calculateStimuliIntensities(stimulusInfo, screenRefreshRate)
     return { keyframe: setUpKeyframe(keyframeString, stimulusInfo.keyframeName), animationDuration: animationDuration };
 }
 
-export function start(elements, screenRefreshRate)
-{
-  	try
-  	{
+export function start(elements, screenRefreshRate) {
+  	try {
      	const animationType = " step-end infinite", baseKframeName = "stimulus_";
     	var styleSheet = document.styleSheets[1]; // Assumption: Grab first stylesheet
 
@@ -132,15 +131,13 @@ export function start(elements, screenRefreshRate)
 	        	keyframeName: kframeName
 	        };
 	       	        
-	        var animationInfo = calculateStimuliIntensities(stimulusInfo);
+	        var animationInfo = calculateStimuliIntensities(stimulusInfo, screenRefreshRate);
 	        var cycleDurationString = animationInfo.animationDuration + "s ".concat(kframeName, animationType);
        		
 	        styleSheet.insertRule(animationInfo.keyframe, styleSheet.cssRules.length);					
 	        elements[counter].style.animation = cycleDurationString;
     	}
-  	}
-  	catch (ex)
-  	{
+  	} catch (ex) {
       console.log("Exception thrown: " + ex);
     	alert(ex);
   	}        

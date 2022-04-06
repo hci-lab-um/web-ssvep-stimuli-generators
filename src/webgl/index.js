@@ -7,7 +7,7 @@ const methods = {
     periodic
 }
 
-export function start(method="periodic", elements, screenRefreshRate) {
+export function start(method="periodic", elements, screenRefreshRate, canvas) {
 
     if (!(method in methods)) console.error('Method not available for WebGL')
     else {
@@ -24,7 +24,7 @@ export function start(method="periodic", elements, screenRefreshRate) {
         // NOTE: The only method-specific function
     	var intensities = methods[method].calculateStimuliIntensities({stimulusFrequency, phaseShift}, screenRefreshRate);
 
-    	var glComponents = webgl.initWebGlRenderingComponents(offScreenCanvases.darkOffScreenCanvas, offScreenCanvases.lightOffScreenCanvas);
+    	var glComponents = webgl.initWebGlRenderingComponents(canvas, offScreenCanvases.darkOffScreenCanvas, offScreenCanvases.lightOffScreenCanvas);
 
     	var elementInfo = 
     					{ 
@@ -45,34 +45,34 @@ export function start(method="periodic", elements, screenRefreshRate) {
 		               		counter: 0
 		            	};
 
-    	animate(performance.now(), elementInfo);
+    	animate(performance.now(), elementInfo, glComponents);
     }
 }
 }
 
-function animate(now, elementInfo)
+function animate(now, elementInfo, glComponents)
 {
 
 	if (elementInfo.stimulusCycle.intensities[elementInfo.counter] === 1)
 	{
-        webgl.setStimulusColour({
-							element: elementInfo.element, 
-		    				coordBuffer: elementInfo.coordBuffers.lightTexCoordBuffer,
-		    				texCoordLoc: elementInfo.textures.texCoordLocation, 
-		    				texture: elementInfo.textures.lightTexture
-	    				  });
+        webgl.setStimulusColour(glComponents.gl, {
+			element: elementInfo.element, 
+			coordBuffer: elementInfo.coordBuffers.lightTexCoordBuffer,
+			texCoordLoc: elementInfo.textures.texCoordLocation, 
+			texture: elementInfo.textures.lightTexture
+		});
 	}
 	else 
 	{
-        webgl.setStimulusColour({
-							element: elementInfo.element, 
-		    				coordBuffer: elementInfo.coordBuffers.darkTexCoordBuffer,
-		    				texCoordLoc: elementInfo.textures.texCoordLocation, 
-		    				texture: elementInfo.textures.darkTexture
-		    			  });
+        webgl.setStimulusColour(glComponents.gl, {
+			element: elementInfo.element, 
+			coordBuffer: elementInfo.coordBuffers.darkTexCoordBuffer,
+			texCoordLoc: elementInfo.textures.texCoordLocation, 
+			texture: elementInfo.textures.darkTexture
+		});
 	}
 
 	(elementInfo.counter < elementInfo.stimulusCycle.maxFrames - 1 ? elementInfo.counter++ : elementInfo.counter = 0);
 
-	window.requestAnimationFrame(function(now) { animate(now, elementInfo) });
+	window.requestAnimationFrame(function(now) { animate(now, elementInfo, glComponents) });
 }

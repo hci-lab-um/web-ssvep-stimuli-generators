@@ -22,20 +22,6 @@ body
     background-color: black;
 }
 
-button
-{ 
-    width: 15vw;  
-    height: 15vw;
-    font-size: 3vw;
-    font-family: Andale Mono, monospace;   
-    font-style: bold;
-    color: blueviolet;
-    text-align: center;
-    outline: none;
-    word-break: break-all;
-    transform: translate3d(0, 0, 0);
-}
-
 input[type=text]
 {
     width: 67.4vw;
@@ -72,6 +58,8 @@ input[type=text]
     word-break: break-all;
     display: table-cell;
     vertical-align: middle;
+    /* background: rgba(255,255,255,0.5); */
+    background: white;
 }
 
 canvas {

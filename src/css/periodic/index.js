@@ -18,8 +18,13 @@ export function start(elements, screenRefreshRate) {
 
   for (var counter = 0; counter < elements.length; counter++) {
 
-    // var dark = elements[counter].getAttribute("data-dark-color");
-    // var light = elements[counter].getAttribute("data-light-color");
+    // Apply Colors
+    // var dark = elements[counter].getAttribute("data-dark-color"); 
+    var light = elements[counter].getAttribute("data-light-color");
+    const rgbaVals =  light.split(',')
+    const rgb = rgbaVals.slice(0,3).map(v => 255*(v ?? 1))
+    elements[counter].style.backgroundColor = `rgba(${rgb},${rgbaVals[3]})`;
+    elements[counter].style.visibility = "visible"
 
     var frequencyToSet = elements[counter].getAttribute("data-frequency");
     var cycleDurationInSeconds = getStimulusCycleDuration(screenRefreshRate, frequencyToSet).toString();

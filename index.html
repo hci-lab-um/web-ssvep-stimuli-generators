@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 
 <html>
-<title>CSS SSVEP Stimulator</title>
+<title>SSVEP Stimulator</title>
 
 <head>
   <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
@@ -23,19 +23,19 @@
   </div>
   <canvas id="drawing_canvas"></canvas>
 
-  <div id="content">
-      <div class = "container-fluid">
+		<div id="content">
+      <div id = "buttonDiv" class = "container-fluid">
           <div class = "row my-lg-4 my-sm-0 mx-lg-1 mx-sm-0">
             <div class = "col-3 mr-lg-4 mr-sm-0">
-              <div id="stim_1" class="SSVEP" data-frequency="6" data-dark-color="0, 0, 0, 1" data-light-color="1, 1, 1, 1" data-phase-shift="0">A B C</br>D E F</br>G H I</div>
+              <div id="stim_1" class="SSVEP">A B C</br>D E F</br>G H I</div>
             </div>
 
            <div class = "col-3 mr-lg-4 mr-sm-0">
-              <div id="stim_2" class="SSVEP" data-frequency="7.5" data-dark-color="0, 0, 0, 1" data-light-color="1, 1, 1, 1" data-phase-shift="0">J K L</br>M N O</br>P Q R</div>
+              <div id="stim_2" class="SSVEP" >J K L</br>M N O</br>P Q R</div>
             </div>
 
             <div class = "col-3 mr-lg-4 mr-sm-0">
-              <div id="stim_3" class="SSVEP" data-frequency="9" data-dark-color="0, 0, 0, 1" data-light-color="1, 1, 1, 1" data-phase-shift="0">S T U</br>V W X</br>Y Z _</div>
+              <div class="SSVEP">S T U</br>V W X</br>Y Z _</div>
             </div>
           </div>
 
@@ -49,27 +49,26 @@
 
             <!--data-phase-shift should be defined in terms of pi-->
             <div class = "col-3 text-right">
-              <div id="stim_4" class="SSVEP" data-frequency="10.5" data-dark-color="0, 0, 0, 1" data-light-color="1, 1, 1, 1" data-phase-shift="0">Delete</div>
+              <div class="SSVEP">Delete</div>
             </div>
           </div>
 
 
           <div class = "row my-lg-4 my-sm-0 mx-lg-1 mx-sm-0">   
             <div class = "col-3 mr-lg-4 mr-sm-0">
-              <div id="stim_5" class="SSVEP" data-frequency="12" data-dark-color="0, 0, 0, 1" data-light-color="1, 1, 1, 1" data-phase-shift="0">Word1</div>
+              <div class="SSVEP" >Word1</div>
             </div>
 
             <div class = "col-3 mr-lg-4 mr-sm-0">
-              <div id="stim_6" class="SSVEP" data-frequency="13.5" data-dark-color="0, 0, 0, 1" data-light-color="1, 1, 1, 1" data-phase-shift="0">Word2</div>
+              <div class="SSVEP">Word2</div>
             </div>
 
             <div class = "col-3 mr-lg-4 mr-sm-0">
-              <div id="stim_7" class="SSVEP" data-frequency="15" data-dark-color="0, 0, 0, 1" data-light-color="1, 1, 1, 1" data-phase-shift="0">Word3</div>
+              <div class="SSVEP">Word3</div>
             </div>
           </div>
+     </div>
   </div>	
-  </div>
-
 
 </body>
 
@@ -84,13 +83,13 @@
 
   // ------------------------ Attributes ------------------------
   const attributes = [
-    {frequency: 6.67, "dark-color": "black", "light-color": "white", "phase-shift": "0"}, 
-    {frequency: 20, "dark-color": "black", "light-color": "white", "phase-shift": "0"}, 
-    {frequency: 8.57, "dark-color": "black", "light-color": "white", "phase-shift": "0"}, 
-    {frequency: 6.67, "dark-color": "black", "light-color": "white", "phase-shift": "0"}, 
-    {frequency: 12, "dark-color": "black", "light-color": "white", "phase-shift": "0"}, 
-    {frequency: 15, "dark-color": "black", "light-color": "white", "phase-shift": "0"}, 
-    {frequency: 6.67, "dark-color": "black", "light-color": "white", "phase-shift": "0"}, 
+    {frequency: 6.67, "dark-color": "0, 0, 0, 1", "light-color": "1, 0, 0, 1", "phase-shift": "0"}, 
+    {frequency: 20, "dark-color": "0, 0, 0, 1", "light-color": "1, 1, 1, 1", "phase-shift": "0"}, 
+    {frequency: 8.57, "dark-color": "0, 0, 0, 1", "light-color": "1, 1, 1, 1", "phase-shift": "0"}, 
+    {frequency: 6.67, "dark-color": "0, 0, 0, 1", "light-color": "1, 1, 1, 1", "phase-shift": "0"}, 
+    {frequency: 12, "dark-color": "0, 0, 0, 1", "light-color": "1, 1, 1, 1", "phase-shift": "0"}, 
+    {frequency: 15, "dark-color": "0, 0, 0, 1", "light-color": "1, 1, 1, 1", "phase-shift": "0"}, 
+    {frequency: 6.67, "dark-color": "0, 0, 0, 1", "light-color": "1, 1, 1, 1", "phase-shift": "0"}, 
   ]
 
   // ------------------------ Setup Options ------------------------

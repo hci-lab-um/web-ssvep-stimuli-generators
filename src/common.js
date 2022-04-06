@@ -45,9 +45,8 @@ export const calculateRefreshRate = async (bufferSize=10, samples=300) => {
       refreshRateCount[refreshRates[i]] += 1;
     }
   
-    maxCount = Object.keys(refreshRateCount).map(Number).filter(
-      r => refreshRateCount[r] == Math.max.apply(null, Object.values(refreshRateCount))); //may contain list of strings
-  
+    maxCount = Object.keys(refreshRateCount).map(Number).filter(r => refreshRateCount[r] == Math.max.apply(null, Object.values(refreshRateCount))); //may contain list of strings
+
     if (maxCount.length > 1) maxCount = [maxCount.reduce((a, b) => a + b) / maxCount.length];
   
     return maxCount.shift().toFixed(7)  

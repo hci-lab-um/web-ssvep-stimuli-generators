@@ -120,10 +120,15 @@ export function start(elements, screenRefreshRate) {
     	for (var counter = 0; counter < elements.length; counter ++)
     	{
     		  var kframeName = baseKframeName.concat(counter); 
-	        var lightColor = elements[counter].getAttribute("data-light-color");
 
-	        elements[counter].style.backgroundColor = lightColor;
-	        elements[counter].style.visibility = "visible";
+          
+          // Apply Colors
+          // var dark = elements[counter].getAttribute("data-dark-color"); 
+          var light = elements[counter].getAttribute("data-light-color");
+          const rgbaVals =  light.split(',')
+          const rgb = rgbaVals.slice(0,3).map(v => 255*(v ?? 1))
+          elements[counter].style.backgroundColor = `rgba(${rgb},${rgbaVals[3]})`;
+          elements[counter].style.visibility = "visible"
 
 	        var stimulusInfo = {
 	        	stimulusFrequency: elements[counter].getAttribute("data-frequency"),

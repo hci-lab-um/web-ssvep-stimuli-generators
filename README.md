@@ -17,10 +17,9 @@ Supervisory team:
 - Minimized redundant code (e.g. calculateRefreshRate ) and moved to `src/common.js` and the `index.js` files for each subdirectory.
 - Converted to ES6 import / export syntax to allow developers to apply library code when they wish to
 
-### Issues
-- ssvep.css.start('approximation', elements, attributes) not working.
-- ssvep.webgl.start('periodic', elements, attributes) not working.
-- ssvep.webgl.start('approximation', elements, attributes) not working.
+## Issues
+- Position WebGL Canvas behind arbitrary elements across an entire a webpage *with scrolling*.
+- Implement CSS data-dark-color attribute changes
 
 ## Usage
 To run a specific library, the stimulator's files must be served locally, e.g. using Microsoft Internet Information Services (IIS). ```http://localhost``` should be used as the first part of the web address to launch the library's relevant HTML file within the browser.
@@ -32,15 +31,15 @@ There are 4 stimuli generators in this repository, `CSS+Square Wave Approximatio
 After importing the respective script into your HTML document, you can create any number of stimuli on the page using the following `data-*` attributes:
 
 1. `data-frequency`: specifying the SSVEP stimulus frequency
-2. `data-light-color`: specifying the color of the SSVEP stimulus (N.B. `data-dark-color` currently defaults to `transparent`)
+2. `data-light-color`: specifying the color of the SSVEP stimulus (N.B. `data-dark-color` currently defaults to `transparent`) **in RGBA format** (e.g. `1,1,1,1` for white)
 3. `data-phase-shift`: specifying the phase shift (frames delay) for the SSVEP stimulus
 
 Stimuli can be defined as follows:
 
 ```html
-   <button data-frequency="6.67" data-dark-color="black" data-light-color="white" data-phase-shift="0">Content</button>
-   <button data-frequency="7" data-dark-color="black" data-light-color="white" data-phase-shift="0">Content</button>
-   <button data-frequency="8.57" data-dark-color="black" data-light-color="white" data-phase-shift="0">Content</button>
+   <button data-frequency="6.67" data-dark-color="0,0,0,1" data-light-color="1,1,1,1" data-phase-shift="0">Content</button>
+   <button data-frequency="7" data-dark-color="0,0,0,1" data-light-color="1,1,1,1" data-phase-shift="0">Content</button>
+   <button data-frequency="8.57" data-dark-color="0,0,0,1" data-light-color="1,1,1,1" data-phase-shift="0">Content</button>
 ```
 
 You can then select your HTML elements from the page (and optionally assign their attributes from JavaScript): 
@@ -52,9 +51,9 @@ You can then select your HTML elements from the page (and optionally assign thei
    const elements = document.querySelectorAll('button')
 
   const attributes = [
-    {frequency: 6.67, "dark-color": "black", "light-color": "white", "phase-shift": "0"}, 
-    {frequency: 7, "dark-color": "black", "light-color": "white", "phase-shift"}, 
-    {frequency: 8.57, "dark-color": "black", "light-color": "white", "phase-shift"}
+    {frequency: 6.67, "dark-color": "0,0,0,1", "light-color": "1,1,1,1", "phase-shift": "0"}, 
+    {frequency: 7, "dark-color": "0,0,0,1", "light-color": "1,1,1,1", "phase-shift"}, 
+    {frequency: 8.57, "dark-color": "0,0,0,1", "light-color": "1,1,1,1", "phase-shift"}
   ]
 
   ssvep.css.start('periodic', elements, attributes)

@@ -39,14 +39,13 @@ export class WebGL extends SSVEP{
 
     // Return Element Info
     getElementInfo = (o) => {
-        var darkColour = o.element.getAttribute("data-dark-color").split(',').map(Number); 
-    	var lightColour = o.element.getAttribute("data-light-color").split(',').map(Number); 
-    	var offScreenCanvases = webgl.setUpOffScreenCanvases(darkColour, lightColour);
+        o.dark = o.element.getAttribute("data-dark-color") ?? '0,0,0,1'
+        o.light = o.element.getAttribute("data-light-color") ?? '1,1,1,1'
+		const dark = o.dark.split(',').map(Number); 
+		const light = o.light.split(',').map(Number); 
+    	var offScreenCanvases = webgl.setUpOffScreenCanvases(dark, light);
 
-    	var stimulusFrequency = Number(o.element.getAttribute("data-frequency")); 
-		var phaseShift = Number(o.element.getAttribute("data-phase-shift")); 
-
-    	const intensities = this.technique.calculateStimuliIntensities({stimulusFrequency, phaseShift}, this.refreshRate)
+    	const intensities = this.technique.calculateStimuliIntensities(o, this.refreshRate)
 
 		// Setup Dark Texture
 		var darkTexCoordBuffer = webgl.setUpBuffer(this.gl);

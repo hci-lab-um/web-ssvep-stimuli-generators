@@ -29,9 +29,11 @@ export class CSS extends SSVEP {
     animate = (o) => {
 
         // Apply Inline Styling
-        const rgbaVals = o.light.split(',')
-        const rgb = rgbaVals.slice(0, 3).map(v => 255 * (v ?? 1))
-        o.element.style.backgroundColor = `rgba(${rgb},${rgbaVals[3]})`;
+        if (o.light){
+            const rgbaVals = o.light.split(',')
+            const rgb = rgbaVals.slice(0, 3).map(v => 255 * (v ?? 1))
+            o.element.style.backgroundColor = `rgba(${rgb},${rgbaVals?.[3] ?? 1 })`;
+        }
         o.element.style.visibility = "visible"
 
         // Get Animation Info

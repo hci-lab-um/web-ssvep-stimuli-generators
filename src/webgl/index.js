@@ -30,14 +30,14 @@ export async function start(method="periodic", elements, canvas, samples=10) {
 		gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
 
 	for (var counter = 0; counter < elements.length; counter++) {
-		var darkColour = elements[counter].getAttribute("data-dark-color").split(',').map(Number); 
-    	var lightColour = elements[counter].getAttribute("data-light-color").split(',').map(Number); 
+		var darkColour = (elements[counter].getAttribute("data-dark-color") ?? '0,0,0,1').split(',').map(Number); 
+    	var lightColour = (elements[counter].getAttribute("data-light-color") ?? '1,1,1,1').split(',').map(Number); 
     	var offScreenCanvases = webgl.setUpOffScreenCanvases(darkColour, lightColour);
 
-    	var stimulusFrequency = Number(elements[counter].getAttribute("data-frequency")); 
+    	var frequency = Number(elements[counter].getAttribute("data-frequency")); 
 		var phaseShift = Number(elements[counter].getAttribute("data-phase-shift")); 
 
-    	const intensities = methods[method].calculateStimuliIntensities({stimulusFrequency, phaseShift}, screenRefreshRate)
+    	const intensities = methods[method].calculateStimuliIntensities({frequency, phaseShift}, screenRefreshRate)
 
 		// Setup Dark Texture
 		var darkTexCoordBuffer = webgl.setUpBuffer(gl);

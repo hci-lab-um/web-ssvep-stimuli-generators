@@ -5,12 +5,12 @@ import { calculateNumberOfSeconds, generateSquareWave, modulus, period } from '.
 
 export function calculateStimuliIntensities(stimulusInfo, screenRefreshRate){
 
-    var noOfSeconds = calculateNumberOfSeconds(stimulusInfo.stimulusFrequency), intensities = [];
+    var noOfSeconds = calculateNumberOfSeconds(stimulusInfo.frequency), intensities = [];
     const totalNumberOfFrames = new Decimal(noOfSeconds).times(screenRefreshRate).ceil().toNumber(); 
     
     for (var frame = 0; frame < totalNumberOfFrames; frame ++){	
     	var squareWaveResult = generateSquareWave(
-			new Decimal(period).times(stimulusInfo.stimulusFrequency).times(new Decimal(frame).div(screenRefreshRate)).add(stimulusInfo.phaseShift)
+			new Decimal(period).times(stimulusInfo.frequency).times(new Decimal(frame).div(screenRefreshRate)).add(stimulusInfo.phaseShift)
 		);
 
     	var intensity = new Decimal(0.5).times(new Decimal(1).add(squareWaveResult));

@@ -10,7 +10,7 @@ function getTotalNumberOfFrames(frequencyToSet, screenRefreshRate) {
 export function calculateStimuliIntensities(stimulusInfo, screenRefreshRate) {
 	
 	const intensities = []
-	var halfCycle = getTotalNumberOfFrames(stimulusInfo.stimulusFrequency, screenRefreshRate) / 2; // result may be whole no. or decimal
+	var halfCycle = getTotalNumberOfFrames(stimulusInfo.frequency, screenRefreshRate) / 2; // result may be whole no. or decimal
 
 	intensities.push(...Array(Math.ceil(halfCycle)).fill(1)); // first cycle half
 	intensities.push(...Array(Math.floor(halfCycle)).fill(0)); // second cycle half

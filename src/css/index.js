@@ -23,13 +23,15 @@ export async function start(method="periodic", elements, samples) {
       // Apply Colors
       // var dark = elements[counter].getAttribute("data-dark-color"); 
       var light = elements[counter].getAttribute("data-light-color");
-      const rgbaVals =  light.split(',')
-      const rgb = rgbaVals.slice(0,3).map(v => 255*(v ?? 1))
-      elements[counter].style.backgroundColor = `rgba(${rgb},${rgbaVals[3]})`;
+      if (light){
+        const rgbaVals =  light.split(',')
+        const rgb = rgbaVals.slice(0,3).map(v => 255*(v ?? 1))
+        elements[counter].style.backgroundColor = `rgba(${rgb},${rgbaVals[3]})`;
+      }
       elements[counter].style.visibility = "visible"
   
-      var frequency = elements[counter].getAttribute("data-frequency");
-      var phaseShift = elements[counter].getAttribute("data-phase-shift");
+      var frequency = Number(elements[counter].getAttribute("data-frequency"));
+      var phaseShift = Number(elements[counter].getAttribute("data-phase-shift"));
 
       var animationInfo = methods[method].getAnimationInfo({frequency, phaseShift}, screenRefreshRate)
       styleSheet.sheet.insertRule(animationInfo.rule, styleSheet.cssRules?.length ?? 0);

@@ -49,10 +49,10 @@ export default class SSVEP {
 
             // Get Info
             o.id = o.id ?? Math.floor(1000000*Math.random())
-            o.frequency = el.getAttribute('data-frequency') ?? '0'
-            o.light = el.getAttribute('data-light-color') ?? '1,1,1,1'
-            o.dark = el.getAttribute('data-dark-color') ?? '0,0,0,1'
-            o.phaseShift = el.getAttribute('data-phase-shift') ?? '0'
+            o.frequency = Number(el.getAttribute('data-frequency') ?? '0')
+            o.light = el.getAttribute('data-light-color')
+            o.dark = el.getAttribute('data-dark-color')
+            o.phaseShift = Number(el.getAttribute('data-phase-shift') ?? '0')
 
             this.elements.set(o.id, o)
             return o

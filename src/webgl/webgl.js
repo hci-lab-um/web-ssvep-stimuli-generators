@@ -1,60 +1,25 @@
 "use strict";
 
 // webgl - vertex shader
-const vShaderString = 
+export const vertex = 
 	'attribute vec2 a_position;' +
 	'attribute vec2 a_texCoord;' +
 	'varying vec2 v_texCoord;' +
 	'void main() { gl_Position = vec4(a_position, 0, 1); v_texCoord = a_texCoord; }';
 
 // webgl - fragment shader
-const fShaderString = 
+export const fragment = 
 	'precision mediump float;' +
 	'uniform sampler2D u_image;' +
 	'varying vec2 v_texCoord;' +
 	'void main() { gl_FragColor = texture2D(u_image, v_texCoord); }';
 
-const drawingCanvas = document.getElementById("drawing_canvas");
-var gl = drawingCanvas.getContext("webgl", { powerPreference: "high-performance", alpha: false });
-
 // (x, y) co-ordinate pairs, which serve to fill the entire on-screen canvas
 const stimulusCoords = new Float32Array([ -1.0, 1.0, 1.0, 1.0, -1.0, -1.0, 1.0, -1.0]);
 
-// create shader program using both the vertex and fragment shaders strings
-var shaderProgram = createShaderProgram(vShaderString, fShaderString); 
-
-var positionLocation = gl.getAttribLocation(shaderProgram, "a_position");
-var texCoordLocation = gl.getAttribLocation(shaderProgram, "a_texCoord");
-
-var positionBuffer = setUpBuffer(gl);
-
 const isPowerOfTwo = dimension => (Math.log(dimension) / Math.log(2)) % 1 === 0;
 
-function initWebGlRenderingComponents(darkCanvas, lightCanvas)
-{	
-	gl.useProgram(shaderProgram);
-
-	var darkTexCoordBuffer = setUpBuffer();
-	var darkTexture = setUpTexture(darkCanvas);
-
-	var lightTexCoordBuffer = setUpBuffer();
-	var lightTexture = setUpTexture(lightCanvas);
-
-	gl.enableVertexAttribArray(positionLocation);
-
-	gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
-	gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
-
-	return { 	
-				darkTexture: darkTexture, 
-				lightTexture: lightTexture, 
-				darkTexCoordBuffer: darkTexCoordBuffer, 
-				lightTexCoordBuffer: lightTexCoordBuffer, 
-				texCoordLocation: texCoordLocation 
-			};
-}
-
-function setUpOffScreenCanvases(darkColour, lightColour)
+export function setUpOffScreenCanvases(darkColour, lightColour)
 {
 	// off screen canvases
 	var lightOffScreenCanvas = document.createElement("canvas");
@@ -74,14 +39,14 @@ function setUpOffScreenCanvases(darkColour, lightColour)
 	return  { darkOffScreenCanvas: darkOffScreenCanvas, lightOffScreenCanvas: lightOffScreenCanvas };
 } 
 
-function createShaderProgram(vShaderString, fShaderString) 
+export function createShaderProgram(gl, vShaderString, fShaderString) 
 {
 
 	// create the shader program
 	var shaderProgram = gl.createProgram(); 
 
-	var vertexShader = createShader(vShaderString, gl.VERTEX_SHADER); 
-	var fragmentShader = createShader(fShaderString, gl.FRAGMENT_SHADER); 
+	var vertexShader = createShader(gl, vShaderString, gl.VERTEX_SHADER); 
+	var fragmentShader = createShader(gl, fShaderString, gl.FRAGMENT_SHADER); 
 
 	gl.attachShader(shaderProgram, vertexShader);
 	gl.attachShader(shaderProgram, fragmentShader);
@@ -96,7 +61,7 @@ function createShaderProgram(vShaderString, fShaderString)
 	return shaderProgram;
 }
 
-function createShader(shaderString, shaderType) 
+function createShader(gl, shaderString, shaderType) 
 {
 
 	// create shader
@@ -111,7 +76,7 @@ function createShader(shaderString, shaderType)
 	return shader;
 }
 
-function setUpBuffer()
+export function setUpBuffer(gl)
 {
 	var buffer = gl.createBuffer();
 	gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
@@ -120,7 +85,7 @@ function setUpBuffer()
 	return buffer;
 }
 
-function setUpTexture(offScreenCanvas) 
+export function setUpTexture(gl, offScreenCanvas) 
 {
 	var texture = gl.createTexture();
 	gl.bindTexture(gl.TEXTURE_2D, texture);
@@ -138,7 +103,7 @@ function setUpTexture(offScreenCanvas)
 	return texture;
 }
 
-function setStimulusColour(renderingInfo)
+export function setStimulusColour(gl, renderingInfo)
 {	
  
  	resizeCanvasToDisplaySize(gl.canvas);

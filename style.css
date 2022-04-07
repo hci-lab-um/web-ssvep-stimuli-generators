@@ -1,0 +1,80 @@
+
+html
+{
+    height: 100%;
+    width: 100%;
+    display: table;
+}
+
+body
+{
+    height: 100%;
+    width: 100%;
+    display: table-cell;
+    vertical-align: middle;
+    background-color: black;
+}
+
+input[type=text]
+{
+    width: 67.4vw;
+    height: 5vw;
+    text-align: center;
+    font-size: 3vw;
+    font-family: Andale Mono, monospace;   
+    font-style: bold;
+    color: white;
+    border: solid 0.2vw white;
+}
+
+.sentenceArea
+{
+    background-color: black;
+}
+
+.SSVEP {  
+    display: inline-block;
+	width: 15vw;
+	height: 15vw;
+	font-size: 3vw;
+    font-family: Andale Mono, monospace;   
+    font-style: bold;
+    color: blueviolet;
+    text-align: center;
+    outline: none;
+    word-break: break-all;
+    display: table-cell;
+    vertical-align: middle;
+    /* background: rgba(255,255,255,0.5); */
+}
+
+canvas {
+	position: absolute;
+	display: block;
+	top: 0;
+	left: 0;
+	z-index: -1;
+	width: 100vw;
+	height: 100vh;
+}
+
+
+/* Added by Garrett Flynn */
+#options { 
+    position: fixed;
+    top: 0;
+    right: 0;
+    color: black;
+    width: 200px;
+    text-align: left;
+    color: white;
+    padding: 25px;
+    background: rgb(38, 38, 38, 0.5);
+    z-index: 1000;
+}
+
+#options button {
+    width: 100%;
+    height: auto;
+    font-size: 10px;
+}

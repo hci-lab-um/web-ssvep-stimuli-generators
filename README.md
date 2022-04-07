@@ -4,14 +4,12 @@ CSS and WebGL were adopted to implement four cross-platform Steady State Visuall
 
 More information about these libraries can be found in this peer reviewed publication by the same authors: [Towards Accurate Browser-based SSVEP Stimuli Generation](https://www.scitepress.org/Papers/2020/101594/pdf/index.html).
 
-## Usage
-To run a specific library, the stimulator's files must be served locally, e.g. using Microsoft Internet Information Services (IIS). ```http://localhost``` should be used as the first part of the web address to launch the library's relevant HTML file within the browser.
+In alignment with [existing documentation](https://developer.mozilla.org/en-US/docs/Web/Performance/CSS_JavaScript_animation_performance), it was found that CSS animations are more stable and performant than their WebGL counterparts.
 
 ## Generating on-page stimuli
-
 There are 4 stimuli generators in this repository, `CSS+Square Wave Approximation`, `CSS+Constant Period`, `WebGL+Square Wave Approximation` and `WebGL+Constant Period`.
 
-After importing the respective script into your HTML document, you can create any number of stimuli on the page using the following `data-*` attributes:
+After importing the library, you can create any number of stimuli on the page using the following `data-*` attributes:
 
 1. `data-frequency`: specifying the SSVEP stimulus frequency
 2. `data-light-color`: specifying the color of the SSVEP stimulus (N.B. `data-dark-color` currently defaults to `transparent`) **in RGBA format** (e.g. `1,1,1,1` for white)
@@ -25,7 +23,8 @@ Stimuli can be defined as follows:
    <button data-frequency="8.57" data-dark-color="0,0,0,1" data-light-color="1,1,1,1" data-phase-shift="0">Content</button>
 ```
 
-You can then select your HTML elements from the page and begin using them as stimuli:
+### Begin Stimuli Generation
+To begin stimuli generation, you must select your HTML elements and add to the manager
 ```html
 <script type="module">
 
@@ -33,35 +32,42 @@ You can then select your HTML elements from the page and begin using them as sti
 
    const elements = document.querySelectorAll('button')
 
-// ----------- CSS Methods -----------
-  const stop = stimuli.css.start('periodic', elements)
-//   ssvep.css.start('approximation', elements, attributes)
+   // ----------- CSS Methods -----------
+   const manager = new stimuli.CSS('periodic', elements)
+   // const manager = new stimuli.CSS('approximation', elements)
 
-// ----------- WebGL Methods -----------
-// Note: Requires a third option parameter with a canvas (HTML Canvas) key / value pair
+   // ----------- WebGL Methods -----------
+   // const canvas = document.body.querySelector('canvas')
+   // const manager = new stimuli.WebGL('periodic', elements, canvas)
+   // const manager = new stimuli.WebGL('approximation', elements, canvas)
 
-// const canvas = document.body.querySelector('canvas')
-//   ssvep.webgl.start('periodic', elements, attributes, {canvas})
-//   ssvep.webgl.start('approximation', elements, attributes, {canvas})
+   elements.forEach(el => manager.set(el)) // Add Elements
+   manager.start() // Start Stimuli Generation
 
 </script>
 ```
 
-Optionally, you may also define more key / value pairs in the `options` argument that can control the calculation of screen refresh rate:
+You can add more stimuli (CSS manager only) by passing one or more elements to the `start()` method:
 
 ``` javascript
-const options = {
-  canvas, // An HTML Canvas element (for WebGL methods)
-  samples: 100, // For calculation of refresh rate
-}
-
+  manager.start(document.getElementById('new_element'))
+   //  manager.start(document.body.querySelectorAll('.other'))
 ```
 
-You can cancel ongoing stimuli generation by calling the returned function:
+This technique also allows you to selectively start a subset of elements.
+
+### Cancel Stimuli Generation
+You can cancel all ongoing stimuli generation by calling the `stop()` method:
 
 ``` javascript
-  const stop = stimuli.css.start('periodic', elements)
-  window.onkeydown = () => stop()
+  manager.stop()
+```
+
+Or stop a subset by passing one or more elements as the first argument (CSS manager only):
+
+``` javascript
+  manager.stop(document.getElementById('new_element'))
+//  manager.stop(document.body.querySelectorAll('.other'))
 ```
 
 ## Roadmap

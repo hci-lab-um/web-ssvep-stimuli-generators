@@ -83,8 +83,15 @@
 
   // ------------------------ Arbitrary Elements ------------------------
   const buttons = document.getElementById('options').querySelectorAll('button')
-  const elements = document.body.querySelectorAll('.SSVEP')
+  const elements = Array.from(document.body.querySelectorAll('.SSVEP'))
   const canvas = document.body.querySelector('canvas')
+
+  // Sample Elements
+  const half = Math.round(elements.length / 2)
+  const sample1 = elements.slice(0,half)
+  const sample2 = elements.slice(half)
+
+  console.log(sample1, sample2)
 
   // ------------------------ Attributes ------------------------
   const attributes = [
@@ -100,10 +107,10 @@
 
   const css = new stimuli.CSS('periodic', 10)
   const webgl = new stimuli.WebGL('periodic', canvas, 10)
-  elements.forEach(el => {
-    css.set(el)
-    webgl.set(el)
-  })
+  // elements.forEach(el => {
+  //   css.set(el)
+  //   webgl.set(el)
+  // })
 
   // ------------------------ Setup Options ------------------------
   let cancel = null
@@ -120,10 +127,9 @@
       if (cancel instanceof Function) cancel() // Cancel ongoing stimuli generation
 
       if (el.id != 'cancel') {
-        const arr = Array.from(elements)
 
         // Step 1: Apply Frequencies to Elements
-        arr.forEach((element, i) => {
+        elements.forEach((element, i) => {
           for (let key in attributes[i]) element.setAttribute(`data-${key}`, attributes[i][key])
         })
 
@@ -131,12 +137,22 @@
         const thisType = stimuli[type]
         if (thisType) {
           if (type === 'webgl') {
-            await webgl.start()
-            cancel = webgl.clear
+            await webgl.start(elements)
+            cancel = webgl.stop
             // cancel = await thisType.start(method, elements, canvas)
           } else {
-            await css.start()
-            cancel = css.clear
+            await css.start(sample1)
+            setTimeout(() => {
+              css.start(sample2)
+              setTimeout(() => {
+                css.stop(sample1)
+                setTimeout(() => {
+                  css.start(elements)
+                }, 1000) // Start all
+              }, 1000) // Wait to remove the first sample
+            }, 1000) // Wait to add more
+
+            cancel = css.stop
             // cancel = await thisType.start(method, elements)
           }
 

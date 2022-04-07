@@ -16,10 +16,10 @@ export class CSS extends SSVEP{
         document.head.appendChild(this.style);
     }
 
-    ondelete = (el) => {
-        el.style.animation = '';
-        el.style.visibility = '';
-        el.style.backgroundColor = '';
+    ondelete = (o) => {
+        o.element.style.animation = '';
+        o.element.style.visibility = '';
+        o.element.style.backgroundColor = '';
     }
 
     onstop = () => {

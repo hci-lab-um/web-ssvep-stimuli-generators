@@ -2,9 +2,7 @@ import { calculateRefreshRate } from './common.js'
 
 export default class SSVEP {
 
-    method = null
     refreshRate = null
-    canvas = null
     elements = new Map()
     samples = 10
     active = false
@@ -13,12 +11,12 @@ export default class SSVEP {
 
         this.technique = methods[method] // From library
         this.samples = samples
-        Array.from(options.elements ?? []).forEach(this.set)
-
     }
 
     // Start Stimuli Generation
-    start = async () => {
+    start = async (elements = Array.from(this.elements.values())) => {
+
+        if (!Array.isArray(elements))  elements = (elements instanceof HTMLElement) ? [elements] : Array.from(elements)
 
         if (!this.active) {
 
@@ -26,26 +24,27 @@ export default class SSVEP {
 
             // Calculate Refresh Rate
             this.refreshRate = await calculateRefreshRate(10, this.samples)
-
-            // Apply Styling
-            this.elements.forEach((o, id) => {
-                
-                const el = o.element
-
-                 // Update Animations
-                this.set(el)
-                
-                // Start Animation
-                this.animate(o)
-            })
-
-            this.active = true // toggle active
         }
+
+        // Apply Styling
+        console.log(elements)
+        elements.forEach((o, id) => {
+            
+            const el = (o instanceof HTMLElement) ? o : o.element
+
+                // Update Animations
+            o = this.set(el)
+            
+            // Start Animation
+            this.animate(o)
+        })
+
+        this.active = true // toggle active
     }
 
 
     // Set Element
-    set = async (el) => {
+    set = (el) => {
 
             const o = Array.from(this.elements.values()).find(o => o.element === el) ?? {}
             o.element = el
@@ -58,44 +57,46 @@ export default class SSVEP {
             o.phaseShift = el.getAttribute('data-phase-shift') ?? '0'
 
             this.elements.set(o.id, o)
-
+            return o
     }
 
     // Remove Inline Styling
     delete = (element) => {
         const found = Array.from(this.elements).find((arr, i) => {
             if (arr[1].element === element) {
-                this._delete(arr[1])
+                this.ondelete(arr[1])
                 return this.elements.delete(arr[0])
             }
         })
 
-        if (!found) this._delete({element})
+        if (!found) this.ondelete({element})
     }
 
     // Stop Stimuli Generation
-    stop = () => {
-        this.onstop()
-        this.elements.forEach(o => this.ondelete(o)) // Only method-specific deletion (not from instance itself)
-        this.active = false
-    }
+    stop = (elements = Array.from(this.elements.values()).map(o => o.element)) => {
+        if (!Array.isArray(elements))  elements = (elements instanceof HTMLElement) ? [elements] : Array.from(elements)
+        
+        // Element-Specific
+        this.elements.forEach(o => {
+           if (elements.includes(o.element)) this.ondelete(o)
+        })
 
-    // Clear All Stimuli
-    clear = () => {
-        this.onclear()
-        this.stop()
+        // When All Are Stopped
+        if (elements.length === this.elements.size) {
+            this.onstop()
+            this.active = false
+        }
     }
 
     // Reset Elements
     reset = () => {
-        this.clear()
+        this.stop()
         this.elements.forEach(o => this.delete(o.element))
     }
 
     onstart = () => {}
     ondelete = () => {}
     onstop = () => {}
-    onclear = () => {}
 
     calculateRefreshRate = calculateRefreshRate
 

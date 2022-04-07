@@ -33,7 +33,7 @@ export class WebGL extends SSVEP{
         o.animate = null
     }
 
-    onclear = () => {
+    onstop = () => {
        this.gl.clear(this.gl.DEPTH_BUFFER_BIT | this.gl.COLOR_BUFFER_BIT | this.gl.STENCIL_BUFFER_BIT);
     }
 

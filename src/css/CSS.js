@@ -55,10 +55,10 @@ export class CSS {
 
                 // Get Animation Info
                 var animationInfo = this.technique.getAnimationInfo(o, this.refreshRate, id);
-                var cycleDurationString = animationInfo.duration.concat("s ", animationInfo.name, animationInfo.type);
+                var cycleDurationString = String(animationInfo.duration).concat("s ", animationInfo.name, animationInfo.type);
 
                 // Apply Animation
-                if (animationInfo.rule) this.style.sheet.insertRule(animationInfo.rule, this.style.cssRules?.length ?? 0);
+                this.style.sheet.insertRule(animationInfo.rule, this.style.cssRules?.length ?? 0);
                 el.style.animation = cycleDurationString;
 
             })

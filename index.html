@@ -78,6 +78,7 @@
 <script type="module">
 
   import * as stimuli from "./src/index.js"
+
   // import * as stimuli from "./dist/index.esm.js"
 
   // ------------------------ Arbitrary Elements ------------------------
@@ -96,6 +97,11 @@
     { frequency: 6.67, "dark-color": "0, 0, 0, 1", "light-color": "1, 1, 1, 1", "phase-shift": "0" },
   ]
 
+
+  const css = new stimuli.CSS('periodic', 10)
+  elements.forEach(el => css.set(el))
+
+
   // ------------------------ Setup Options ------------------------
   let cancel = null
 
@@ -104,6 +110,9 @@
 
     // Set OnClick Event
     el.onclick = async () => {
+
+      // Set Method on Classes
+      css.method = method
 
       if (cancel instanceof Function) cancel() // Cancel ongoing stimuli generation
 
@@ -119,7 +128,13 @@
         const thisType = stimuli[type]
         if (thisType) {
           if (type === 'webgl') cancel = await thisType.start(method, elements, canvas)
-          else cancel = await thisType.start(method, elements)
+          else {
+            await css.start()
+            cancel = css.stop
+            // cancel = await thisType.start(method, elements)
+          }
+          // else cancel = await thisType.start(method, elements)
+
         }
         else console.error('This type/method pair does not exist')
       }

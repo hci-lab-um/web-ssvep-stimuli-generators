@@ -8,9 +8,11 @@ function setUpKeyframe(keyframeString, keyframeName){
   	return keyframe;
 }
 
-function calculateStimuliIntensities(stimulusInfo, screenRefreshRate){ 
+export function getAnimationInfo(stimulusInfo, screenRefreshRate, id=Math.floor(1000000*Math.random())){ 
 
-    var noOfSeconds = calculateNumberOfSeconds(stimulusInfo.stimulusFrequency),
+  const type = " step-end infinite", name = "stimulus_" + id 
+
+    var noOfSeconds = calculateNumberOfSeconds(stimulusInfo.frequency),
         currentInterval = new Decimal(0), 
         keyframeString = "", 
         lastOpacity = 0;
@@ -19,7 +21,7 @@ function calculateStimuliIntensities(stimulusInfo, screenRefreshRate){
 
     for (var frame = 0; frame < totalNumberOfFrames; frame ++){
         var squareWaveResult = generateSquareWave(
-              new Decimal(period).times(stimulusInfo.stimulusFrequency).times(new Decimal(frame).div(screenRefreshRate)).add(stimulusInfo.phaseShift)
+              new Decimal(period).times(stimulusInfo.frequency).times(new Decimal(frame).div(screenRefreshRate)).add(stimulusInfo.phaseShift)
         );
 
         var intensity = new Decimal(0.5).times(new Decimal(1).add(squareWaveResult)).toNumber();
@@ -33,14 +35,18 @@ function calculateStimuliIntensities(stimulusInfo, screenRefreshRate){
     }
 
     var singleFrameDuration = new Decimal(1).div(screenRefreshRate);
-    var animationDuration = singleFrameDuration.times(totalNumberOfFrames).toNumber();
+    var duration = singleFrameDuration.times(totalNumberOfFrames).toNumber();
 
-    return { keyframe: setUpKeyframe(keyframeString, stimulusInfo.keyframeName), animationDuration: animationDuration };
+    return { 
+      rule: setUpKeyframe(keyframeString, name), 
+      duration, 
+      type,
+      name
+    };
 }
 
 export function start(elements, screenRefreshRate) {
   	try {
-       const animationType = " step-end infinite", baseKframeName = "stimulus_";
        
       // Insert Stylesheet with Keyframe
       const styleSheet = document.createElement('style');
@@ -48,8 +54,6 @@ export function start(elements, screenRefreshRate) {
       document.head.appendChild(styleSheet);
 
     	for (var counter = 0; counter < elements.length; counter ++){
-    		  var kframeName = baseKframeName.concat(counter); 
-
           
           // Apply Colors
           // var dark = elements[counter].getAttribute("data-dark-color"); 
@@ -60,16 +64,16 @@ export function start(elements, screenRefreshRate) {
           elements[counter].style.visibility = "visible"
 
 	        var stimulusInfo = {
-	        	stimulusFrequency: elements[counter].getAttribute("data-frequency"),
+	        	frequency: elements[counter].getAttribute("data-frequency"),
 	        	phaseShift: elements[counter].getAttribute("data-phase-shift"),
-	        	keyframeName: kframeName
 	        };
 	       	        
-	        var animationInfo = calculateStimuliIntensities(stimulusInfo, screenRefreshRate);
-	        var cycleDurationString = animationInfo.animationDuration + "s ".concat(kframeName, animationType);
-           
-	        styleSheet.sheet.insertRule(animationInfo.keyframe, styleSheet.cssRules?.length ?? 0);					
+	        var animationInfo = getAnimationInfo(stimulusInfo, screenRefreshRate);
+	        var cycleDurationString = animationInfo.duration + "s ".concat(animationInfo.name, animationInfo.type);
+
+	        styleSheet.sheet.insertRule(animationInfo.rule, styleSheet.cssRules?.length ?? 0);					
           elements[counter].style.animation = cycleDurationString;
+          console.log(animationInfo.rule, cycleDurationString)
       }
       
       return () => {

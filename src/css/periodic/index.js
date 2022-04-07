@@ -6,27 +6,44 @@ function getStimulusCycleDuration(screenRefreshRate, frequencyToSet) {
 
   var refreshRateCycleDuration = calculateCycleDurationInSeconds(screenRefreshRate);
   var stimulusCycleDuration = calculateCycleDurationInSeconds(frequencyToSet);
+  // console.log(screenRefreshRate, frequencyToSet, refreshRateCycleDuration, stimulusCycleDuration)
 
   var numberOfFrames = Math.ceil(stimulusCycleDuration / refreshRateCycleDuration);
   return numberOfFrames * refreshRateCycleDuration;
+}
+const rule = `
+@keyframes flicker {
+    0% { opacity: 0; }
+    50% { opacity: 1; }
+}`
+
+export function getAnimationInfo(stimulusInfo, screenRefreshRate){ 
+
+  const seconds = "s ", type = " step-end infinite", name = "flicker";
+
+  var duration = getStimulusCycleDuration(screenRefreshRate, stimulusInfo.frequency).toString();
+
+  return {
+    duration,
+    name,
+    type,
+    rule
+  }
+
 }
 
 
 export function start(elements, screenRefreshRate) {
 
-  // Insert Stylesheet with Keyframe
   const styleSheet = document.createElement('style');
   styleSheet.type = 'text/css';
   document.head.appendChild(styleSheet);
-  styleSheet.sheet.insertRule(`
-  @keyframes flicker {
-      0% { opacity: 0; }
-      50% { opacity: 1; }
-  }`, styleSheet.length);
+
+  // Insert Stylesheet with Keyframe
+  styleSheet.sheet.insertRule(rule, styleSheet.length);
 
   // Start Function
-  const seconds = "s ", animationType = " step-end infinite", keyframeName = "flicker";
-
+  
   for (var counter = 0; counter < elements.length; counter++) {
 
     // Apply Colors
@@ -37,10 +54,10 @@ export function start(elements, screenRefreshRate) {
     elements[counter].style.backgroundColor = `rgba(${rgb},${rgbaVals[3]})`;
     elements[counter].style.visibility = "visible"
 
-    var frequencyToSet = elements[counter].getAttribute("data-frequency");
-    var cycleDurationInSeconds = getStimulusCycleDuration(screenRefreshRate, frequencyToSet).toString();
+    var frequency = elements[counter].getAttribute("data-frequency");
+    var animationInfo = getAnimationInfo({frequency}, screenRefreshRate)
 
-    var cycleDurationString = cycleDurationInSeconds.concat(seconds, keyframeName, animationType);
+    var cycleDurationString = animationInfo.duration.concat("s ", animationInfo.name, animationInfo.type);
 
     elements[counter].style.animation = cycleDurationString;
   }

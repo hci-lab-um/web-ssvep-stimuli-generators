@@ -9,6 +9,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <!-- <script src="dist/index.js"></script> -->
+  <!-- <script src="https://cdn.jsdelivr.net/npm/ssvep-stimuli@latest/dist/index.esm.js"></script> -->
   <link rel="stylesheet" type="text/css" href="./bootstrap.css" />
   <link rel="stylesheet" type="text/css" href="./style.css" />
 </head>
@@ -77,9 +78,9 @@
 
 <script type="module">
 
-  import * as stimuli from "./src/index.js"
-
+  // import * as stimuli from "./src/index.js"
   // import * as stimuli from "./dist/index.esm.js"
+    import * as stimuli from "https://cdn.jsdelivr.net/npm/ssvep-stimuli@latest/dist/index.esm.js"
 
   // ------------------------ Arbitrary Elements ------------------------
   const buttons = document.getElementById('options').querySelectorAll('button')
@@ -91,11 +92,9 @@
   const sample1 = elements.slice(0,half)
   const sample2 = elements.slice(half)
 
-  console.log(sample1, sample2)
-
   // ------------------------ Attributes ------------------------
   const attributes = [
-    { frequency: 6.67, "dark-color": "0, 0, 0, 1", "light-color": "1, 0, 0, 1", "phase-shift": "0" },
+    { frequency: 6.67, "dark-color": "0, 0, 0, 1", "light-color": "1, 1, 1, 1", "phase-shift": "0" },
     { frequency: 20, "dark-color": "0, 0, 0, 1", "light-color": "1, 1, 1, 1", "phase-shift": "0" },
     { frequency: 8.57, "dark-color": "0, 0, 0, 1", "light-color": "1, 1, 1, 1", "phase-shift": "0" },
     { frequency: 6.67, "dark-color": "0, 0, 0, 1", "light-color": "1, 1, 1, 1", "phase-shift": "0" },
@@ -137,23 +136,32 @@
         const thisType = stimuli[type]
         if (thisType) {
           if (type === 'webgl') {
+
+            // ---------------- Simple Demo ----------------
             await webgl.start(elements)
             cancel = webgl.stop
-            // cancel = await thisType.start(method, elements, canvas)
-          } else {
-            await css.start(sample1)
-            setTimeout(() => {
-              css.start(sample2)
-              setTimeout(() => {
-                css.stop(sample1)
-                setTimeout(() => {
-                  css.start(elements)
-                }, 1000) // Start all
-              }, 1000) // Wait to remove the first sample
-            }, 1000) // Wait to add more
 
+            // ---------------- Functional Usage ----------------
+            // cancel = await stimuli.webgl.start(method, elements, canvas)
+          } else {
+
+            // ---------------- Simple Demo ----------------
+            await css.start(elements)
             cancel = css.stop
-            // cancel = await thisType.start(method, elements)
+
+            // ---------------- Complex Demo ----------------
+            // await css.start(sample1)                         // Activate the first half of the elements
+            // setTimeout(() => {                               // Activate the second half 
+            //   css.start(sample2)
+            //   setTimeout(() => {                             // Deactivate the first half
+            //     css.stop(sample1)
+            //     setTimeout(() => css.start(elements), 1000)  // Activate all
+            //   }, 1000)
+            // }, 1000) 
+            // cancel = css.stop
+
+            // ---------------- Functional Usage ----------------
+            // cancel = await stimuli.css.start(method, elements)
           }
 
         }

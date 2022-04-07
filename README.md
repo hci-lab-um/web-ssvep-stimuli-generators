@@ -70,6 +70,8 @@ Or stop a subset by passing one or more elements as the first argument:
 //  manager.stop(document.body.querySelectorAll('.other'))
 ```
 
+
+
 ## Roadmap
 - Add and remove elements based on visibility in the window.
 - Dynamically change the frequency values applied to an element

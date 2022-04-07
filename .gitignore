@@ -1,4 +1,5 @@
 *.lock
 *-lock.json
 
+**/dist
 **/node_modules

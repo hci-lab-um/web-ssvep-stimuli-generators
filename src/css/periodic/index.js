@@ -44,4 +44,17 @@ export function start(elements, screenRefreshRate) {
 
     elements[counter].style.animation = cycleDurationString;
   }
+
+  return () => {
+
+    // Remove Stylesheet
+    styleSheet.remove()
+
+    // Remove Inline Styling
+    elements.forEach(el => {
+      el.style.animation = '';
+      el.style.visibility = '';
+      el.style.backgroundColor = '';
+    })
+  }
 }

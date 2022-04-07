@@ -4,7 +4,9 @@ export const calculateCycleDurationInSeconds = frequency => 1 / frequency;
 
 
 // --------------------- Refresh Rate Helpers ---------------------
-export const getRefreshRateReadings = async (bufferSize = 10, samples = 300) => {
+export const getRefreshRateReadings = async (bufferSize = 10, samples = 10) => {
+
+  if (samples < 10) samples = 10 // Minimum ten samples
 
   var rafTimestamps = [], refreshRates = [];
 
@@ -34,7 +36,7 @@ export const getRefreshRateReadings = async (bufferSize = 10, samples = 300) => 
 
 };
 
-export const calculateRefreshRate = async (bufferSize=10, samples=300) => {
+export const calculateRefreshRate = async (bufferSize=10, samples=10) => {
 
   const refreshRates = await getRefreshRateReadings(bufferSize, samples)
 
@@ -52,7 +54,8 @@ export const calculateRefreshRate = async (bufferSize=10, samples=300) => {
 
   if (maxCount.length > 1) maxCount = [maxCount.reduce((a, b) => a + b) / maxCount.length];
 
-  return maxCount.shift().toFixed(7)  
+  const val = Number(maxCount.shift().toFixed(7)) 
+  return val  
 }
 
 

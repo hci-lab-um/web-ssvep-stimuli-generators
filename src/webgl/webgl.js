@@ -1,14 +1,14 @@
 "use strict";
 
 // webgl - vertex shader
-const vShaderString = 
+export const vertex = 
 	'attribute vec2 a_position;' +
 	'attribute vec2 a_texCoord;' +
 	'varying vec2 v_texCoord;' +
 	'void main() { gl_Position = vec4(a_position, 0, 1); v_texCoord = a_texCoord; }';
 
 // webgl - fragment shader
-const fShaderString = 
+export const fragment = 
 	'precision mediump float;' +
 	'uniform sampler2D u_image;' +
 	'varying vec2 v_texCoord;' +
@@ -18,41 +18,6 @@ const fShaderString =
 const stimulusCoords = new Float32Array([ -1.0, 1.0, 1.0, 1.0, -1.0, -1.0, 1.0, -1.0]);
 
 const isPowerOfTwo = dimension => (Math.log(dimension) / Math.log(2)) % 1 === 0;
-
-export function initWebGlRenderingComponents(drawingCanvas, darkCanvas, lightCanvas)
-{	
-
-	var gl = drawingCanvas.getContext("webgl", { powerPreference: "high-performance", alpha: false });
-
-	// Create shader program using both the vertex and fragment shaders strings
-	var shaderProgram = createShaderProgram(gl, vShaderString, fShaderString); 
-	var positionLocation = gl.getAttribLocation(shaderProgram, "a_position");
-	var texCoordLocation = gl.getAttribLocation(shaderProgram, "a_texCoord");
-	var positionBuffer = setUpBuffer(gl);
-	gl.useProgram(shaderProgram);
-
-	// Setup Dark Texture
-	var darkTexCoordBuffer = setUpBuffer(gl);
-	var darkTexture = setUpTexture(gl, darkCanvas);
-
-	// Setup Light Texture
-	var lightTexCoordBuffer = setUpBuffer(gl);
-	var lightTexture = setUpTexture(gl, lightCanvas);
-
-	gl.enableVertexAttribArray(positionLocation);
-
-	gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
-	gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
-
-	return { 	
-		gl,
-		darkTexture, 
-		lightTexture, 
-		darkTexCoordBuffer, 
-		lightTexCoordBuffer, 
-		texCoordLocation 
-	};
-}
 
 export function setUpOffScreenCanvases(darkColour, lightColour)
 {
@@ -74,7 +39,7 @@ export function setUpOffScreenCanvases(darkColour, lightColour)
 	return  { darkOffScreenCanvas: darkOffScreenCanvas, lightOffScreenCanvas: lightOffScreenCanvas };
 } 
 
-function createShaderProgram(gl, vShaderString, fShaderString) 
+export function createShaderProgram(gl, vShaderString, fShaderString) 
 {
 
 	// create the shader program
@@ -111,7 +76,7 @@ function createShader(gl, shaderString, shaderType)
 	return shader;
 }
 
-function setUpBuffer(gl)
+export function setUpBuffer(gl)
 {
 	var buffer = gl.createBuffer();
 	gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
@@ -120,7 +85,7 @@ function setUpBuffer(gl)
 	return buffer;
 }
 
-function setUpTexture(gl, offScreenCanvas) 
+export function setUpTexture(gl, offScreenCanvas) 
 {
 	var texture = gl.createTexture();
 	gl.bindTexture(gl.TEXTURE_2D, texture);

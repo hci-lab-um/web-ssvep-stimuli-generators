@@ -40,8 +40,12 @@ function calculateStimuliIntensities(stimulusInfo, screenRefreshRate){
 
 export function start(elements, screenRefreshRate) {
   	try {
-     	const animationType = " step-end infinite", baseKframeName = "stimulus_";
-    	var styleSheet = document.styleSheets[1]; // Assumption: Grab first stylesheet
+       const animationType = " step-end infinite", baseKframeName = "stimulus_";
+       
+      // Insert Stylesheet with Keyframe
+      const styleSheet = document.createElement('style');
+      styleSheet.type = 'text/css';
+      document.head.appendChild(styleSheet);
 
     	for (var counter = 0; counter < elements.length; counter ++){
     		  var kframeName = baseKframeName.concat(counter); 
@@ -63,10 +67,24 @@ export function start(elements, screenRefreshRate) {
 	       	        
 	        var animationInfo = calculateStimuliIntensities(stimulusInfo, screenRefreshRate);
 	        var cycleDurationString = animationInfo.animationDuration + "s ".concat(kframeName, animationType);
-       		
-	        styleSheet.insertRule(animationInfo.keyframe, styleSheet.cssRules.length);					
-	        elements[counter].style.animation = cycleDurationString;
-    	}
+           
+	        styleSheet.sheet.insertRule(animationInfo.keyframe, styleSheet.cssRules?.length ?? 0);					
+          elements[counter].style.animation = cycleDurationString;
+      }
+      
+      return () => {
+
+            // Remove Stylesheet
+            styleSheet.remove()
+
+            // Remove Inline Styling
+            elements.forEach(el => {
+              el.style.animation = '';
+              el.style.visibility = '';
+              el.style.backgroundColor = '';
+            })
+      }
+
   	} catch (ex) {
       console.log("Exception thrown: " + ex);
     	alert(ex);

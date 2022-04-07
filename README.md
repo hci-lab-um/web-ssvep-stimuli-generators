@@ -34,7 +34,7 @@ You can then select your HTML elements from the page and begin using them as sti
    const elements = document.querySelectorAll('button')
 
 // ----------- CSS Methods -----------
-  stimuli.css.start('periodic', elements)
+  const stop = stimuli.css.start('periodic', elements)
 //   ssvep.css.start('approximation', elements, attributes)
 
 // ----------- WebGL Methods -----------
@@ -55,6 +55,13 @@ const options = {
   samples: 100, // For calculation of refresh rate
 }
 
+```
+
+You can cancel ongoing stimuli generation by calling the returned function:
+
+``` javascript
+  const stop = stimuli.css.start('periodic', elements)
+  window.onkeydown = () => stop()
 ```
 
 ## Roadmap

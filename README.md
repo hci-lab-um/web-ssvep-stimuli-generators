@@ -66,7 +66,6 @@ You can cancel ongoing stimuli generation by calling the returned function:
 
 ## Roadmap
 - Add and remove single elements.
-   - **Question:** Is it more efficient to run the main commands once on multiple elements or multiple times on single elements?
 - Add and remove elements based on visibility in the window.
 - Position WebGL Canvas behind arbitrary elements across an entire a webpage *with scrolling*.
 - Dynamically change the frequency values applied to an element

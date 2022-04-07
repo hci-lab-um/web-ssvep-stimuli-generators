@@ -30,11 +30,11 @@
     <div id="buttonDiv" class="container-fluid">
       <div class="row my-lg-4 my-sm-0 mx-lg-1 mx-sm-0">
         <div class="col-3 mr-lg-4 mr-sm-0">
-          <div id="stim_1" class="SSVEP">A B C</br>D E F</br>G H I</div>
+          <div class="SSVEP">A B C</br>D E F</br>G H I</div>
         </div>
 
         <div class="col-3 mr-lg-4 mr-sm-0">
-          <div id="stim_2" class="SSVEP">J K L</br>M N O</br>P Q R</div>
+          <div class="SSVEP">J K L</br>M N O</br>P Q R</div>
         </div>
 
         <div class="col-3 mr-lg-4 mr-sm-0">
@@ -99,8 +99,11 @@
 
 
   const css = new stimuli.CSS('periodic', 10)
-  elements.forEach(el => css.set(el))
-
+  const webgl = new stimuli.WebGL('periodic', canvas, 10)
+  elements.forEach(el => {
+    css.set(el)
+    webgl.set(el)
+  })
 
   // ------------------------ Setup Options ------------------------
   let cancel = null
@@ -127,10 +130,13 @@
         // Step 2: Animate
         const thisType = stimuli[type]
         if (thisType) {
-          if (type === 'webgl') cancel = await thisType.start(method, elements, canvas)
-          else {
+          if (type === 'webgl') {
+            await webgl.start()
+            cancel = webgl.clear
+            // cancel = await thisType.start(method, elements, canvas)
+          } else {
             await css.start()
-            cancel = css.stop
+            cancel = css.clear
             // cancel = await thisType.start(method, elements)
           }
 

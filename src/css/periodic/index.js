@@ -6,7 +6,6 @@ function getStimulusCycleDuration(screenRefreshRate, frequencyToSet) {
 
   var refreshRateCycleDuration = calculateCycleDurationInSeconds(screenRefreshRate);
   var stimulusCycleDuration = calculateCycleDurationInSeconds(frequencyToSet);
-  // console.log(screenRefreshRate, frequencyToSet, refreshRateCycleDuration, stimulusCycleDuration)
 
   var numberOfFrames = Math.ceil(stimulusCycleDuration / refreshRateCycleDuration);
   return numberOfFrames * refreshRateCycleDuration;

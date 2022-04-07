@@ -3,7 +3,7 @@ import * as periodic from './css/periodic/index.js'
 import SSVEP from './SSVEP.js'
 
 
-export class CSS extends SSVEP{
+export class CSS extends SSVEP {
 
     style = document.createElement('style');
 

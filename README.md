@@ -47,7 +47,7 @@ To begin stimuli generation, you must select your HTML elements and add to the m
 </script>
 ```
 
-You can add more stimuli (CSS manager only) by passing one or more elements to the `start()` method:
+You can add more stimuli by passing one or more elements to the `start()` method:
 
 ``` javascript
   manager.start(document.getElementById('new_element'))
@@ -63,7 +63,7 @@ You can cancel all ongoing stimuli generation by calling the `stop()` method:
   manager.stop()
 ```
 
-Or stop a subset by passing one or more elements as the first argument (CSS manager only):
+Or stop a subset by passing one or more elements as the first argument:
 
 ``` javascript
   manager.stop(document.getElementById('new_element'))
@@ -71,12 +71,17 @@ Or stop a subset by passing one or more elements as the first argument (CSS mana
 ```
 
 ## Roadmap
-- Add and remove single elements.
 - Add and remove elements based on visibility in the window.
-- Position WebGL Canvas behind arbitrary elements across an entire a webpage *with scrolling*.
 - Dynamically change the frequency values applied to an element
-   - Automatically assign to allow for maximum discriminability
+   - Automatically assign for maximum discriminability.
+- Position WebGL Canvas behind arbitrary elements across an entire a webpage *with scrolling*.
 - Implement CSS data-dark-color attribute changes
+- Expose a way to assign your own CSS rules and/or WebGL intensities
+
+
+## Known Issues
+### WebGL
+1. Dynamically adding elements using WebGL techniques will create too many contexts and halt execution.
 
 ## Acknowledgments
 These libraries were developed by [Alison Camilleri](https://github.com/alison-camilleri) to fulfill part of the requirements for the award of a Master of Science in Computer Information Systems degree.

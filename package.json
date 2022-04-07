@@ -9,7 +9,7 @@
     "dist"
   ],
   "repository": "https://github.com/hci-lab-um/web-ssvep-stimuli-generators",
-  "author": "Alison Camilleri, Garrett Flynn <garrettmflynn@gmail.com>",
+  "author": "Garrett Flynn <garrettmflynn@gmail.com>, Alison Camilleri",
   "license": "GPL-3.0-or-later",
   "scripts": {
     "build": "rollup -c"

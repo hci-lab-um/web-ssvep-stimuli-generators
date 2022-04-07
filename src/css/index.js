@@ -32,7 +32,6 @@ export async function start(method="periodic", elements, samples) {
       var phaseShift = elements[counter].getAttribute("data-phase-shift");
 
       var animationInfo = methods[method].getAnimationInfo({frequency, phaseShift}, screenRefreshRate)
-      console.log(animationInfo)
       styleSheet.sheet.insertRule(animationInfo.rule, styleSheet.cssRules?.length ?? 0);
       var cycleDurationString = String(animationInfo.duration).concat("s ", animationInfo.name, animationInfo.type);
       elements[counter].style.animation = cycleDurationString;

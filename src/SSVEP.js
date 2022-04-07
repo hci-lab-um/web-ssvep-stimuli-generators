@@ -8,7 +8,6 @@ export default class SSVEP {
     active = false
 
     constructor(methods, method = 'periodic', samples = 10) {
-
         this.technique = methods[method] // From library
         this.samples = samples
     }
@@ -27,7 +26,6 @@ export default class SSVEP {
         }
 
         // Apply Styling
-        console.log(elements)
         elements.forEach((o, id) => {
             
             const el = (o instanceof HTMLElement) ? o : o.element

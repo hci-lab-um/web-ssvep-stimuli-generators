@@ -1,5 +1,15 @@
 "use strict";
 
+// off screen canvases
+var lightOffScreenCanvas = document.createElement("canvas");
+var glLight = lightOffScreenCanvas.getContext("webgl", { alpha: false });
+lightOffScreenCanvas.width = 10, lightOffScreenCanvas.height = 10;
+
+var darkOffScreenCanvas = document.createElement("canvas");
+var glDark = darkOffScreenCanvas.getContext("webgl", { alpha: false });
+darkOffScreenCanvas.width = 10, darkOffScreenCanvas.height = 10;
+
+
 // webgl - vertex shader
 export const vertex = 
 	'attribute vec2 a_position;' +
@@ -21,15 +31,6 @@ const isPowerOfTwo = dimension => (Math.log(dimension) / Math.log(2)) % 1 === 0;
 
 export function setUpOffScreenCanvases(darkColour, lightColour)
 {
-	// off screen canvases
-	var lightOffScreenCanvas = document.createElement("canvas");
-	var glLight = lightOffScreenCanvas.getContext("webgl", { alpha: false });
-	lightOffScreenCanvas.width = 10, lightOffScreenCanvas.height = 10;
-
-	var darkOffScreenCanvas = document.createElement("canvas");
-	var glDark = darkOffScreenCanvas.getContext("webgl", { alpha: false });
-	darkOffScreenCanvas.width = 10, darkOffScreenCanvas.height = 10;
-
 	glDark.clearColor(darkColour[0], darkColour[1], darkColour[2], darkColour[3]); 
 	glDark.clear(glDark.COLOR_BUFFER_BIT);
 

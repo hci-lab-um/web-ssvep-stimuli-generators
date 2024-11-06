@@ -21,7 +21,7 @@ export const getRefreshRateReadings = async (bufferSize = 10, samples = 10) => {
         var refreshRate = 1000 * bufferSize / (now - firstTime);
         refreshRates.unshift(refreshRate);
 
-        if (refreshRates.length == samples.length) {
+        if (refreshRates.length == samples) {
           cancelAnimationFrame(id);
           resolve(refreshRates)
           return;

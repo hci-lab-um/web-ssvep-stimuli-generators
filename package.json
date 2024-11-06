@@ -8,7 +8,10 @@
   "files": [
     "dist"
   ],
-  "repository": "https://github.com/hci-lab-um/web-ssvep-stimuli-generators",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hci-lab-um/web-ssvep-stimuli-generators.git"
+  },
   "contributors": [
     "Alison Camilleri <alison.camilleri.15@um.edu.mt>",
     "Chris Porter <chris.porter@um.edu.mt>",

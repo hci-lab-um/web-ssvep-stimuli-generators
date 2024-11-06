@@ -33,13 +33,13 @@ To begin stimuli generation, you must select your HTML elements and add to the m
    const elements = document.querySelectorAll('button')
 
    // ----------- CSS Methods -----------
-   const manager = new stimuli.CSS('periodic', elements)
-   // const manager = new stimuli.CSS('approximation', elements)
+   const manager = new stimuli.CSS('periodic', elements.length)
+   // const manager = new stimuli.CSS('approximation', elements.length)
 
    // ----------- WebGL Methods -----------
    // const canvas = document.body.querySelector('canvas')
-   // const manager = new stimuli.WebGL('periodic', elements, canvas)
-   // const manager = new stimuli.WebGL('approximation', elements, canvas)
+   // const manager = new stimuli.WebGL('periodic', elements.length, canvas)
+   // const manager = new stimuli.WebGL('approximation', elements.length, canvas)
 
    elements.forEach(el => manager.set(el)) // Add Elements
    manager.start() // Start Stimuli Generation

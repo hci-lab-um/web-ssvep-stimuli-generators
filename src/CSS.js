@@ -27,7 +27,6 @@ export class CSS extends SSVEP {
     }
 
     animate = (o) => {
-
         // Apply Inline Styling
         if (o.light){
             const rgbaVals = o.light.split(',')

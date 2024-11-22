@@ -15,7 +15,7 @@ export default class SSVEP {
     // Start Stimuli Generation
     start = async (elements = Array.from(this.elements.values())) => {
 
-        if (!Array.isArray(elements))  elements = (elements instanceof HTMLElement) ? [elements] : Array.from(elements)
+        if (!Array.isArray(elements)) elements = (elements instanceof HTMLElement) ? [elements] : Array.from(elements)
 
         if (!this.active) {
 
@@ -27,12 +27,12 @@ export default class SSVEP {
 
         // Apply Styling
         elements.forEach((o, id) => {
-            
+
             const el = (o instanceof HTMLElement) ? o : o.element
 
-                // Update Animations
+            // Update Animations
             o = this.set(el)
-            
+
             // Start Animation
             this.animate(o)
         })
@@ -44,18 +44,19 @@ export default class SSVEP {
     // Set Element
     set = (el) => {
 
-            const o = Array.from(this.elements.values()).find(o => o.element === el) ?? {}
-            o.element = el
+        const o = Array.from(this.elements.values()).find(o => o.element === el) ?? {}
+        o.element = el
 
-            // Get Info
-            o.id = o.id ?? Math.floor(1000000*Math.random())
-            o.frequency = Number(el.getAttribute('data-frequency') ?? '0')
-            o.light = el.getAttribute('data-light-color')
-            o.dark = el.getAttribute('data-dark-color')
-            o.phaseShift = Number(el.getAttribute('data-phase-shift') ?? '0')
+        // Get Info
+        o.id = o.id ?? Math.floor(1000000 * Math.random())
+        o.frequency = Number(el.getAttribute('data-frequency') ?? '0')
+        o.light = el.getAttribute('data-light-color')
+        o.dark = el.getAttribute('data-dark-color')
+        o.pattern = el.getAttribute('data-pattern')
+        o.phaseShift = Number(el.getAttribute('data-phase-shift') ?? '0')
 
-            this.elements.set(o.id, o)
-            return o
+        this.elements.set(o.id, o)
+        return o
     }
 
     // Remove Inline Styling
@@ -67,16 +68,16 @@ export default class SSVEP {
             }
         })
 
-        if (!found) this.ondelete({element})
+        if (!found) this.ondelete({ element })
     }
 
     // Stop Stimuli Generation
     stop = (elements = Array.from(this.elements.values()).map(o => o.element)) => {
-        if (!Array.isArray(elements))  elements = (elements instanceof HTMLElement) ? [elements] : Array.from(elements)
-        
+        if (!Array.isArray(elements)) elements = (elements instanceof HTMLElement) ? [elements] : Array.from(elements)
+
         // Element-Specific
         this.elements.forEach(o => {
-           if (elements.includes(o.element)) this.ondelete(o)
+            if (elements.includes(o.element)) this.ondelete(o)
         })
 
         // When All Are Stopped
@@ -92,9 +93,9 @@ export default class SSVEP {
         this.elements.forEach(o => this.delete(o.element))
     }
 
-    onstart = () => {}
-    ondelete = () => {}
-    onstop = () => {}
+    onstart = () => { }
+    ondelete = () => { }
+    onstop = () => { }
 
     calculateRefreshRate = calculateRefreshRate
 

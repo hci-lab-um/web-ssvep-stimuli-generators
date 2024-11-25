@@ -90,7 +90,7 @@ export function getAnimationInfo(stimulusInfo, screenRefreshRate, id = Math.floo
         }
         break;
 
-      case Patterns.CHECKERED:
+      case Patterns.CHEQUERED:
         // Determine if it's a "light" or "dark" frame based on square wave
         const isLightFrame = squareWaveResult > 0;
         const checkeredBackground = isLightFrame

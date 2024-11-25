@@ -1,6 +1,10 @@
 "use strict";
 import Decimal from '../../external/decimal.mjs';
 import { calculateNumberOfSeconds, generateSquareWave, modulus, period } from '../../common.js';
+import Patterns from '../../patterns.js';
+
+let changePosition = true;
+let changePosition2 = true;
 
 function setUpKeyframe(keyframeString, keyframeName) {
   var keyframe = `@keyframes ${keyframeName} { ${keyframeString} }`;
@@ -25,7 +29,7 @@ export function getAnimationInfo(stimulusInfo, screenRefreshRate, id = Math.floo
     );
 
     switch (stimulusInfo.pattern) {
-      case "solid":
+      case Patterns.SOLID:
         var intensity = new Decimal(0.5).times(new Decimal(1).add(squareWaveResult)).toNumber();
 
         if (keyframeString === "" || lastOpacity != intensity) {
@@ -35,28 +39,58 @@ export function getAnimationInfo(stimulusInfo, screenRefreshRate, id = Math.floo
 
         break;
 
-      case "dot":
+      case Patterns.DOT:
         const isDotVisible = squareWaveResult > 0;
+        let randomX, randomY;
 
         if (isDotVisible) {
           // Generate random background position to simulate a flicker effect
-          const randomX = Math.floor(Math.random() * 91); // Random value between 0 and 90
-          const randomY = Math.floor(Math.random() * 91); // Random value between 0 and 90
+          if (changePosition) {
+            changePosition = false;
+            randomX = Math.floor(Math.random() * 91); // Random value between 0 and 90
+            randomY = Math.floor(Math.random() * 91); // Random value between 0 and 90
+          }
 
           keyframeString += `${currentInterval.toNumber()}% { 
-                      background-image: url('rand_dot_5k.png'); 
-                      background-size: cover; 
-                      background-position: ${randomX}% ${randomY}%; 
-                      transition: none;
-                  }`;
+                    background-image: url('random-dot-stimuli.webp'); 
+                    background-size: 300%;
+                    background-position: ${randomX}% ${randomY}%; /* This line will only be printed if randomX and randomY are defined */
+                    transition: none;
+                }`;
         } else {
+          changePosition = true;
           keyframeString += `${currentInterval.toNumber()}% { 
-                      background-image: none;
-                  }`;
+                    background-image: none;
+                    background-size: auto; 
+                    background-position: initial;
+                }`;
         }
         break;
 
-      case "checkered":
+      case Patterns.DOT_CONT:
+        const isDotVisibleCont = squareWaveResult > 0;
+        let randomXCont, randomYCont;
+
+        if (isDotVisibleCont) {
+          // Generate random background position to simulate a flicker effect
+          if (changePosition2) {
+            changePosition2 = false;
+            randomXCont = Math.floor(Math.random() * 91); // Random value between 0 and 90
+            randomYCont = Math.floor(Math.random() * 91); // Random value between 0 and 90
+          }
+
+          keyframeString += `${currentInterval.toNumber()}% { 
+                          background-image: url('random-dot-stimuli.webp'); 
+                          background-size: 300%;
+                          background-position: ${randomXCont}% ${randomYCont}%; /* This line will only be printed if randomXCont and randomYCont are defined */
+                          transition: none;
+                      }`;
+        } else {
+          changePosition2 = true;
+        }
+        break;
+
+      case Patterns.CHECKERED:
         // Determine if it's a "light" or "dark" frame based on square wave
         const isLightFrame = squareWaveResult > 0;
         const checkeredBackground = isLightFrame
@@ -65,10 +99,10 @@ export function getAnimationInfo(stimulusInfo, screenRefreshRate, id = Math.floo
 
         if (keyframeString === "" || lastOpacity != squareWaveResult) {
           keyframeString += `${currentInterval.toNumber()}% { 
-                  background-image: ${checkeredBackground}; 
-                  background-size: 20px 20px;
-                  background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
-              }`;
+                    background-image: ${checkeredBackground}; 
+                    background-size: 40px 40px;
+                    background-position: 0 0, 0 20px, 20px -20px, -20px 0px;
+                }`;
           lastOpacity = squareWaveResult;
         }
         break;

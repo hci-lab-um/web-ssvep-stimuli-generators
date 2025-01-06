@@ -19,7 +19,7 @@ export function getAnimationInfo(stimulusInfo, screenRefreshRate, id = Math.floo
   var noOfSeconds = calculateNumberOfSeconds(stimulusInfo.frequency),
     currentInterval = new Decimal(0),
     keyframeString = "",
-    lastOpacity = 0;
+    lastState;
   const totalNumberOfFrames = new Decimal(noOfSeconds).times(screenRefreshRate).ceil().toNumber(), keyframeInterval = new Decimal(100).div(new Decimal(totalNumberOfFrames));
 
 
@@ -30,11 +30,17 @@ export function getAnimationInfo(stimulusInfo, screenRefreshRate, id = Math.floo
 
     switch (stimulusInfo.pattern) {
       case Patterns.SOLID:
-        var intensity = new Decimal(0.5).times(new Decimal(1).add(squareWaveResult)).toNumber();
+        var isLight = squareWaveResult > 0;
 
-        if (keyframeString === "" || lastOpacity != intensity) {
-          keyframeString += `${currentInterval.toNumber()}% { opacity: ${intensity}; } `;
-          lastOpacity = intensity;
+        // Define light and dark colors
+        var lightColor = `rgba(${stimulusInfo.light})`;
+        var darkColor = `rgba(${stimulusInfo.dark})`;
+
+        // Create keyframe string based on the flicker effect
+        if (keyframeString === "" || lastState !== isLight) {
+          var color = isLight ? lightColor : darkColor;
+          keyframeString += `${currentInterval.toNumber()}% { background-color: ${color}; } `;
+          lastState = isLight;
         }
 
         break;
@@ -97,13 +103,13 @@ export function getAnimationInfo(stimulusInfo, screenRefreshRate, id = Math.floo
           ? `linear-gradient(45deg, rgba(${stimulusInfo.dark}) 25%, transparent 25%), linear-gradient(-45deg, rgba(${stimulusInfo.dark}) 25%, transparent 25%), linear-gradient(45deg, transparent 75%, rgba(${stimulusInfo.dark}) 75%), linear-gradient(-45deg, transparent 75%, rgba(${stimulusInfo.dark}) 75%);`
           : `linear-gradient(-45deg, rgba(${stimulusInfo.dark}) 25%, transparent 25%), linear-gradient(45deg, rgba(${stimulusInfo.dark}) 25%, transparent 25%), linear-gradient(-45deg, transparent 75%, rgba(${stimulusInfo.dark}) 75%), linear-gradient(45deg, transparent 75%, rgba(${stimulusInfo.dark}) 75%);`;
 
-        if (keyframeString === "" || lastOpacity != squareWaveResult) {
+        if (keyframeString === "" || lastState != squareWaveResult) {
           keyframeString += `${currentInterval.toNumber()}% { 
                     background-image: ${checkeredBackground}; 
                     background-size: 40px 40px;
                     background-position: 0 0, 0 20px, 20px -20px, -20px 0px;
                 }`;
-          lastOpacity = squareWaveResult;
+          lastState = squareWaveResult;
         }
         break;
 

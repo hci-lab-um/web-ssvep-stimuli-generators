@@ -1,4 +1,5 @@
 import { calculateRefreshRate } from './common.js'
+import Settings from './settings.js'
 
 export default class SSVEP {
 
@@ -48,12 +49,12 @@ export default class SSVEP {
         o.element = el
 
         // Get Info
-        o.id = o.id ?? Math.floor(1000000 * Math.random())
-        o.frequency = Number(el.getAttribute('data-frequency') ?? '0')
-        o.light = el.getAttribute('data-light-color')
-        o.dark = el.getAttribute('data-dark-color')
-        o.pattern = el.getAttribute('data-pattern')
-        o.phaseShift = Number(el.getAttribute('data-phase-shift') ?? '0')
+        o.id = o.id ?? Settings.ID
+        o.frequency = Number(el.getAttribute('data-frequency') ?? Settings.FREQUENCY)
+        o.light = el.getAttribute('data-light-color') ?? Settings.LIGHT
+        o.dark = el.getAttribute('data-dark-color') ?? Settings.DARK
+        o.pattern = el.getAttribute('data-pattern') ?? Settings.PATTERN
+        o.phaseShift = Number(el.getAttribute('data-phase-shift') ?? Settings.PHASESHIFT)
 
         this.elements.set(o.id, o)
         return o

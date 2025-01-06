@@ -49,7 +49,7 @@ export default class SSVEP {
         o.element = el
 
         // Get Info
-        o.id = o.id ?? Settings.ID
+        o.id = el.getAttribute('id') ?? Settings.ID
         o.frequency = Number(el.getAttribute('data-frequency') ?? Settings.FREQUENCY)
         o.light = el.getAttribute('data-light-color') ?? Settings.LIGHT
         o.dark = el.getAttribute('data-dark-color') ?? Settings.DARK

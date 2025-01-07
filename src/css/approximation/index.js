@@ -12,7 +12,7 @@ function setUpKeyframe(keyframeString, keyframeName) {
   return keyframe;
 }
 
-export function getAnimationInfo(stimulusInfo, screenRefreshRate, id = Math.floor(1000000 * Math.random())) {
+export function getAnimationInfo(stimulusInfo, screenRefreshRate, id) {
 
   const type = " step-end infinite", name = "stimulus_" + id
 

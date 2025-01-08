@@ -3,7 +3,6 @@ import Decimal from '../../external/decimal.mjs';
 import { calculateNumberOfSeconds, generateSquareWave, modulus, period } from '../../common.js';
 import Patterns from '../../patterns.js';
 
-let changePosition = true;
 let changePosition2 = true;
 
 function setUpKeyframe(keyframeString, keyframeName) {
@@ -22,6 +21,8 @@ export function getAnimationInfo(stimulusInfo, screenRefreshRate, id) {
     lastState;
   const totalNumberOfFrames = new Decimal(noOfSeconds).times(screenRefreshRate).ceil().toNumber(), keyframeInterval = new Decimal(100).div(new Decimal(totalNumberOfFrames));
 
+  const randomX = Math.floor(Math.random() * 101); // Random value between 0 and 100
+  const randomY = Math.floor(Math.random() * 101); // Random value between 0 and 100
 
   for (var frame = 0; frame < totalNumberOfFrames; frame++) {
     var squareWaveResult = generateSquareWave(
@@ -47,24 +48,14 @@ export function getAnimationInfo(stimulusInfo, screenRefreshRate, id) {
 
       case Patterns.DOT:
         const isDotVisible = squareWaveResult > 0;
-        let randomX, randomY;
 
         if (isDotVisible) {
-          // Generate random background position to simulate a flicker effect
-          if (changePosition) {
-            changePosition = false;
-            randomX = Math.floor(Math.random() * 91); // Random value between 0 and 90
-            randomY = Math.floor(Math.random() * 91); // Random value between 0 and 90
-          }
-
           keyframeString += `${currentInterval.toNumber()}% { 
-                    background-image: url('random-dot-stimuli.webp'); 
-                    background-size: 300%;
+                    background-image: url('random-dot-stimuli.svg');
                     background-position: ${randomX}% ${randomY}%; /* This line will only be printed if randomX and randomY are defined */
                     transition: none;
                 }`;
         } else {
-          changePosition = true;
           keyframeString += `${currentInterval.toNumber()}% { 
                     background-image: none;
                     background-size: auto; 

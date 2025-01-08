@@ -8,7 +8,7 @@ export class CSS extends SSVEP {
     style = document.createElement('style');
 
     constructor(method = 'periodic', samples = 10) {
-        super({approximation, periodic}, method, samples)
+        super({ approximation, periodic }, method, samples)
     }
 
     onstart = () => {
@@ -28,10 +28,15 @@ export class CSS extends SSVEP {
 
     animate = (o) => {
         // Apply Inline Styling
-        if (o.light){
-            const rgbaVals = o.light.split(',')
-            const rgb = rgbaVals.slice(0, 3).map(v => 255 * (v ?? 1))
-            o.element.style.backgroundColor = `rgba(${rgb},${rgbaVals?.[3] ?? 1 })`;
+        if (o.light) {
+            if (o.pattern !== 'dot') {
+                const rgbaVals = o.light.split(',')
+                const rgb = rgbaVals.slice(0, 3).map(v => 255 * (v ?? 1))
+                o.element.style.backgroundColor = `rgba(${rgb},${rgbaVals?.[3] ?? 1})`;
+            }
+            else {
+                o.element.style.backgroundColor = `rgba(255,255,255,1)`;
+            }
         }
         o.element.style.visibility = "visible"
 

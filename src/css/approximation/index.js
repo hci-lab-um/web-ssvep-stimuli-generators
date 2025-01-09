@@ -11,7 +11,7 @@ function setUpKeyframe(keyframeString, keyframeName) {
   return keyframe;
 }
 
-export function getAnimationInfo(stimulusInfo, screenRefreshRate, id) {
+export function getAnimationInfo(stimulusInfo, screenRefreshRate, id, updatedSvgText) {
 
   const type = " step-end infinite", name = "stimulus_" + id
 
@@ -50,8 +50,10 @@ export function getAnimationInfo(stimulusInfo, screenRefreshRate, id) {
         const isDotVisible = squareWaveResult > 0;
 
         if (isDotVisible) {
+          const updatedSvgDataUrl = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(updatedSvgText)}`;
+
           keyframeString += `${currentInterval.toNumber()}% { 
-                    background-image: url('random-dot-stimuli.svg');
+                    background-image: url('${updatedSvgDataUrl}');
                     background-position: ${randomX}% ${randomY}%; /* This line will only be printed if randomX and randomY are defined */
                     transition: none;
                 }`;

@@ -11,17 +11,12 @@ function getStimulusCycleDuration(screenRefreshRate, frequencyToSet) {
   return numberOfFrames * refreshRateCycleDuration;
 }
 
-function setRandomPositionUpdater(variablePrefix, frequency) {
-  const interval = 1000 / frequency; // Interval in milliseconds based on frequency
-  setInterval(() => {
-    const randomX = Math.floor(Math.random() * 91) + '%';
-    const randomY = Math.floor(Math.random() * 91) + '%';
-    document.documentElement.style.setProperty(`--${variablePrefix}-x`, randomX);
-    document.documentElement.style.setProperty(`--${variablePrefix}-y`, randomY);
-  }, interval);
-}
+export function getAnimationInfo(stimulusInfo, screenRefreshRate, id, updatedSvgText) {
+  const randomX = Math.floor(Math.random() * 101) + '%';
+  const randomY = Math.floor(Math.random() * 101) + '%';
 
-export function getAnimationInfo(stimulusInfo, screenRefreshRate, id) {
+  const updatedSvgDataUrl = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(updatedSvgText)}`
+
   const stimulusPatterns = {
     [Patterns.SOLID]: (id) => `
     @keyframes solid-${id} {
@@ -32,20 +27,14 @@ export function getAnimationInfo(stimulusInfo, screenRefreshRate, id) {
     [Patterns.DOT]: (id) => `
     @keyframes dot-${id} {
       0%  { 
-            background-image: url('random-dot-stimuli.webp'); 
-            background-size: 300%;
-            background-position: var(--random-x, 50%) var(--random-y, 50%);
+            background-image: url('${updatedSvgDataUrl}'); 
+            background-position: ${randomX} ${randomY};
             transition: none;
           }
       50% { 
             background-image: none;
             background-size: auto; 
             background-position: initial;
-          }
-      100% {
-            background-image: url('random-dot-stimuli.webp');
-            background-size: 300%;
-            background-position: var(--random-x, 50%) var(--random-y, 50%);
           }
     }`,
 
@@ -88,13 +77,6 @@ export function getAnimationInfo(stimulusInfo, screenRefreshRate, id) {
 
   // Select the CSS rule based on the pattern type
   const rule = (stimulusPatterns[name] || stimulusPatterns[Patterns.SOLID])(id); // Default to 'SOLID' if no pattern is specified
-
-  // Set up position updaters for patterns that require it
-  if (name === Patterns.DOT) {
-    setRandomPositionUpdater('random', stimulusInfo.frequency);
-  } else if (name === Patterns.DOT_CONT) {
-    setRandomPositionUpdater('random2', stimulusInfo.frequency);
-  }
 
   return {
     duration,

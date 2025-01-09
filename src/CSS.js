@@ -26,7 +26,9 @@ export class CSS extends SSVEP {
         this.style.remove()
     }
 
-    animate = (o) => {
+    animate = async (o) => {
+        let updatedSvgText = ''
+
         // Apply Inline Styling
         if (o.light) {
             if (o.pattern !== 'dot') {
@@ -35,18 +37,42 @@ export class CSS extends SSVEP {
                 o.element.style.backgroundColor = `rgba(${rgb},${rgbaVals?.[3] ?? 1})`;
             }
             else {
+                // Functionality to be able to change colour of dots in Patterns.DOT 
                 o.element.style.backgroundColor = `rgba(255,255,255,1)`;
+
+                await fetch('random-dot-stimuli.svg')
+                    .then(response => response.text())
+                    .then(svgText => {
+                        // Parse SVG
+                        const parser = new DOMParser();
+                        const svgDocument = parser.parseFromString(svgText, "image/svg+xml");
+                        const svgElement = svgDocument.documentElement;
+
+                        // Find the <style> block
+                        const mainColor = `rgb(${o.light.slice(0, -2)})`;
+                        const secondaryColor = `rgb(${o.dark.slice(0, -2)})`;
+                        const styleElement = svgElement.querySelector('style');
+                        if (styleElement) {
+                            // Update the CSS variables
+                            const updatedStyle = styleElement.textContent
+                                .replace(/--main-color:[^;]+;/, `--main-color:${mainColor};`) // Replace with mainColor
+                                .replace(/--secondary-color:[^;]+;/, `--secondary-color:${secondaryColor};`); // Replace with secondaryColor
+                            styleElement.textContent = updatedStyle;
+                        }
+
+                        updatedSvgText = new XMLSerializer().serializeToString(svgDocument);
+                    });
             }
+            o.element.style.visibility = "visible"
+
+            // Get Animation Info
+            var animationInfo = this.technique.getAnimationInfo(o, this.refreshRate, o.id, updatedSvgText);
+            var cycleDurationString = String(animationInfo.duration).concat("s ", animationInfo.name, animationInfo.type);
+
+            // Apply Animation
+            this.style.sheet.insertRule(animationInfo.rule, this.style.cssRules?.length ?? 0);
+            o.element.style.animation = cycleDurationString;
+
         }
-        o.element.style.visibility = "visible"
-
-        // Get Animation Info
-        var animationInfo = this.technique.getAnimationInfo(o, this.refreshRate, o.id);
-        var cycleDurationString = String(animationInfo.duration).concat("s ", animationInfo.name, animationInfo.type);
-
-        // Apply Animation
-        this.style.sheet.insertRule(animationInfo.rule, this.style.cssRules?.length ?? 0);
-        o.element.style.animation = cycleDurationString;
-
     }
 }

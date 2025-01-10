@@ -37,27 +37,7 @@ export function getAnimationInfo(stimulusInfo, screenRefreshRate, id, updatedSvg
             background-position: initial;
           }
     }`,
-
-    [Patterns.DOT_CONT]: (id) => `
-    @keyframes dot-cont-${id} {
-      0%  { 
-            background-image: url('random-dot-stimuli.webp'); 
-            background-size: 300%;
-            background-position: var(--random2-x, 50%) var(--random2-y, 50%);
-            transition: none;
-          }
-      50% { 
-            background-image: url('random-dot-stimuli.webp');
-            background-size: 300%;
-            background-position: var(--random2-x, 50%) var(--random2-y, 50%);
-          }
-      100% {
-            background-image: url('random-dot-stimuli.webp');
-            background-size: 300%;
-            background-position: var(--random2-x, 50%) var(--random2-y, 50%);
-          }
-    }`,
-
+    
     [Patterns.CHEQUERED]: (id) => `
     @keyframes chequered-${id} {
       0%  { background-image: linear-gradient(45deg, rgba(${stimulusInfo.dark}) 25%, transparent 25%), linear-gradient(-45deg, rgba(${stimulusInfo.dark}) 25%, transparent 25%), linear-gradient(45deg, transparent 75%, rgba(${stimulusInfo.dark}) 75%), linear-gradient(-45deg, transparent 75%, rgba(${stimulusInfo.dark}) 75%); 

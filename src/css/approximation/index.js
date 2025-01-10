@@ -3,8 +3,6 @@ import Decimal from '../../external/decimal.mjs';
 import { calculateNumberOfSeconds, generateSquareWave, modulus, period } from '../../common.js';
 import Patterns from '../../patterns.js';
 
-let changePosition2 = true;
-
 function setUpKeyframe(keyframeString, keyframeName) {
   var keyframe = `@keyframes ${keyframeName} { ${keyframeString} }`;
 
@@ -21,8 +19,8 @@ export function getAnimationInfo(stimulusInfo, screenRefreshRate, id, updatedSvg
     lastState;
   const totalNumberOfFrames = new Decimal(noOfSeconds).times(screenRefreshRate).ceil().toNumber(), keyframeInterval = new Decimal(100).div(new Decimal(totalNumberOfFrames));
 
-  const randomX = Math.floor(Math.random() * 101); // Random value between 0 and 100
-  const randomY = Math.floor(Math.random() * 101); // Random value between 0 and 100
+  const randomX = Math.floor(Math.random() * 101); // Random value from 0 to 100
+  const randomY = Math.floor(Math.random() * 101); // Random value from 0 to 100
 
   for (var frame = 0; frame < totalNumberOfFrames; frame++) {
     var squareWaveResult = generateSquareWave(
@@ -63,29 +61,6 @@ export function getAnimationInfo(stimulusInfo, screenRefreshRate, id, updatedSvg
                     background-size: auto; 
                     background-position: initial;
                 }`;
-        }
-        break;
-
-      case Patterns.DOT_CONT:
-        const isDotVisibleCont = squareWaveResult > 0;
-        let randomXCont, randomYCont;
-
-        if (isDotVisibleCont) {
-          // Generate random background position to simulate a flicker effect
-          if (changePosition2) {
-            changePosition2 = false;
-            randomXCont = Math.floor(Math.random() * 91); // Random value between 0 and 90
-            randomYCont = Math.floor(Math.random() * 91); // Random value between 0 and 90
-          }
-
-          keyframeString += `${currentInterval.toNumber()}% { 
-                          background-image: url('random-dot-stimuli.webp'); 
-                          background-size: 300%;
-                          background-position: ${randomXCont}% ${randomYCont}%; /* This line will only be printed if randomXCont and randomYCont are defined */
-                          transition: none;
-                      }`;
-        } else {
-          changePosition2 = true;
         }
         break;
 

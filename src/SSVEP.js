@@ -1,5 +1,6 @@
 import { calculateRefreshRate } from './common.js'
 import Settings from './settings.js'
+import Patterns from './patterns.js'
 
 export default class SSVEP {
 
@@ -49,11 +50,22 @@ export default class SSVEP {
         o.element = el
 
         // Get Info
-        o.id = el.getAttribute('id') ?? Settings.ID
-        o.frequency = Number(el.getAttribute('data-frequency') ?? Settings.FREQUENCY)
-        o.light = el.getAttribute('data-light-color') ?? Settings.LIGHT
-        o.dark = el.getAttribute('data-dark-color') ?? Settings.DARK
+        o.id = el.getAttribute('id') ?? Settings.ID;
+        o.frequency = Number(el.getAttribute('data-frequency') ?? Settings.FREQUENCY);
+
+        const lightColor = el.getAttribute('data-light-color') ?? Settings.LIGHT;
+        const darkColor = el.getAttribute('data-dark-color') ?? Settings.DARK;
+        // Validate colours
+        const colorPattern = /^\d+,\d+,\d+,\d+$/;
+        o.light = colorPattern.test(lightColor) ? lightColor : Settings.LIGHT;
+        o.dark = colorPattern.test(darkColor) ? darkColor : Settings.DARK;
+
         o.pattern = el.getAttribute('data-pattern') ?? Settings.PATTERN
+        // Validate pattern
+        if (!Object.values(Patterns).includes(o.pattern)) {
+            o.pattern = Settings.PATTERN;
+        }
+
         o.phaseShift = Number(el.getAttribute('data-phase-shift') ?? Settings.PHASESHIFT)
 
         this.elements.set(o.id, o)

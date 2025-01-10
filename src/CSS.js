@@ -48,15 +48,16 @@ export class CSS extends SSVEP {
                         const svgDocument = parser.parseFromString(svgText, "image/svg+xml");
                         const svgElement = svgDocument.documentElement;
 
-                        // Find the <style> block
                         const mainColor = `rgb(${o.light.slice(0, -2)})`;
                         const secondaryColor = `rgb(${o.dark.slice(0, -2)})`;
+
+                        // Find the <style> block                        
                         const styleElement = svgElement.querySelector('style');
                         if (styleElement) {
                             // Update the CSS variables
                             const updatedStyle = styleElement.textContent
-                                .replace(/--main-color:[^;]+;/, `--main-color:${mainColor};`) // Replace with mainColor
-                                .replace(/--secondary-color:[^;]+;/, `--secondary-color:${secondaryColor};`); // Replace with secondaryColor
+                                .replace(/--main-color:[^;]+;/, `--main-color:${mainColor};`)
+                                .replace(/--secondary-color:[^;]+;/, `--secondary-color:${secondaryColor};`);
                             styleElement.textContent = updatedStyle;
                         }
 

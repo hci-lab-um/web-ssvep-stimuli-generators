@@ -13,10 +13,11 @@ export class WebGL extends SSVEP{
     constructor(method = 'periodic', canvas, samples = 10) {
         super({approximation, periodic}, method, samples)
         this.canvas = canvas
+        this.canvas.style.pointerEvents = 'none';
     }
 
     onstart = () => {
-        this.gl = this.canvas.getContext("webgl", { powerPreference: "high-performance", alpha: false });
+        this.gl = this.canvas.getContext("webgl", { powerPreference: "high-performance", alpha: true });
 		var shaderProgram = webgl.createShaderProgram(this.gl, webgl.vertex, webgl.fragment); 
 		var positionLocation = this.gl.getAttribLocation(shaderProgram, "a_position");
 		this.texCoordLocation = this.gl.getAttribLocation(shaderProgram, "a_texCoord");

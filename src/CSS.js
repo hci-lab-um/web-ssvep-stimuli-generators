@@ -2,7 +2,6 @@ import * as approximation from './css/approximation/index.js'
 import * as periodic from './css/periodic/index.js'
 import SSVEP from './SSVEP.js'
 
-
 export class CSS extends SSVEP {
 
     style = document.createElement('style');
@@ -40,7 +39,7 @@ export class CSS extends SSVEP {
                 // Functionality to be able to change colour of dots in Patterns.DOT 
                 o.element.style.backgroundColor = `rgba(255,255,255,1)`;
 
-                await fetch('random-dot-stimuli.svg')
+                await fetch('./dist/src/resources/random-dot-stimuli.svg')
                     .then(response => response.text())
                     .then(svgText => {
                         // Parse SVG

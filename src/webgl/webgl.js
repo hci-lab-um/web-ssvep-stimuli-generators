@@ -98,7 +98,7 @@ export function setUpTexture(gl, offScreenCanvas) {
 	return texture;
 }
 
-function createChequeredTexture(gl, renderingInfo, flicker) {
+function createChequeredTexture(gl, renderingInfo, flicker, lightColor, darkColor) {
 	const textureSize = 256; // Size of the texture (width and height must be powers of two)
 	const checkerSize = 128;  // Size of each checker square
 
@@ -114,26 +114,28 @@ function createChequeredTexture(gl, renderingInfo, flicker) {
 			// Determine if the current pixel is in a black or white square
 			const isWhite = ((Math.floor(x / checkerSize) + Math.floor(y / checkerSize)) % 2) === 0;
 			const color = flicker
-				? (isWhite ? 255 : 0) // Normal black and white
-				: (isWhite ? 0 : 255); // Swapped black and white
-			imageData[index] = color;       // Red channel
-			imageData[index + 1] = color;   // Green channel
-			imageData[index + 2] = color;   // Blue channel
-			imageData[index + 3] = 255;     // Alpha channel
+				? (isWhite ? lightColor : darkColor)
+				: (isWhite ? darkColor : lightColor);
+
+			// RGBA channels
+			imageData[index] = color[0];       		  // Red channel
+			imageData[index + 1] = color[1];   	      // Green channel
+			imageData[index + 2] = color[2];   		  // Blue channel
+			imageData[index + 3] = 255;               // Alpha channel
 		}
 	}
 
 	// Upload the checkerboard pattern to the texture
 	gl.texImage2D(
-		gl.TEXTURE_2D,     // Target
-		0,                 // Level of detail
-		gl.RGBA,           // Internal format
-		textureSize,       // Width
-		textureSize,       // Height
-		0,                 // Border
-		gl.RGBA,           // Format
-		gl.UNSIGNED_BYTE,  // Data type
-		imageData          // Pixel data
+		gl.TEXTURE_2D,     
+		0,                 
+		gl.RGBA,           
+		textureSize,       
+		textureSize,       
+		0,                 
+		gl.RGBA,          
+		gl.UNSIGNED_BYTE,  
+		imageData          
 	);
 
 	// Set texture parameters
@@ -198,11 +200,13 @@ export function setStimulusColour(gl, renderingInfo) {
 		case 'chequered':
 			// Set up chequered pattern texture
 			let chequeredTexture;
+			const lightColor = renderingInfo.lightColor;
+			const darkColor = renderingInfo.darkColor;
 
 			if (renderingInfo.flicker == true) {
-				chequeredTexture = createChequeredTexture(gl, renderingInfo, true);
+				chequeredTexture = createChequeredTexture(gl, renderingInfo, true, lightColor, darkColor);
 			} else {
-				chequeredTexture = createChequeredTexture(gl, renderingInfo, false);
+				chequeredTexture = createChequeredTexture(gl, renderingInfo, false, lightColor, darkColor);
 			}
 			gl.bindTexture(gl.TEXTURE_2D, chequeredTexture);
 			break;

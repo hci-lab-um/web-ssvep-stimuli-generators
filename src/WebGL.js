@@ -72,7 +72,9 @@ export class WebGL extends SSVEP {
                 lightTexCoordBuffer
             },
             counter: 0,
-            pattern: o.pattern
+            pattern: o.pattern,
+            lightColor: light,
+            darkColor: dark
         };
     }
 
@@ -90,7 +92,9 @@ export class WebGL extends SSVEP {
                     texCoordLoc: elementInfo.textures.texCoordLocation,
                     texture: elementInfo.textures.lightTexture,
                     pattern: elementInfo.pattern,
-                    flicker: true
+                    flicker: true,
+                    lightColor: elementInfo.lightColor,
+                    darkColor: elementInfo.darkColor
                 });
 
             } else {
@@ -101,7 +105,9 @@ export class WebGL extends SSVEP {
                     texCoordLoc: elementInfo.textures.texCoordLocation,
                     texture: elementInfo.textures.darkTexture,
                     pattern: elementInfo.pattern,
-                    flicker: false
+                    flicker: false,
+                    lightColor: elementInfo.lightColor,
+                    darkColor: elementInfo.darkColor
                 });
             }
 

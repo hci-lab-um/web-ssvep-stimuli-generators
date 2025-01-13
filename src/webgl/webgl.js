@@ -1,5 +1,4 @@
 "use strict";
-import Patterns from "src/patterns.js";
 
 // off screen canvases
 var lightOffScreenCanvas = document.createElement("canvas");
@@ -193,10 +192,10 @@ export function setStimulusColour(gl, renderingInfo) {
 
 	// Determine the pattern type and set the appropriate texture
 	switch (renderingInfo.pattern) {
-		case Patterns.SOLID:
+		case 'solid':
 			gl.bindTexture(gl.TEXTURE_2D, renderingInfo.texture);
 			break;
-		case Patterns.CHEQUERED:
+		case 'chequered':
 			// Set up chequered pattern texture
 			let chequeredTexture;
 
@@ -207,7 +206,7 @@ export function setStimulusColour(gl, renderingInfo) {
 			}
 			gl.bindTexture(gl.TEXTURE_2D, chequeredTexture);
 			break;
-		case Patterns.DOT:
+		case 'dot':
 			// Set up dot pattern texture
 			const dotTexture = createDotTexture(gl, renderingInfo);
 			gl.bindTexture(gl.TEXTURE_2D, dotTexture);

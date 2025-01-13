@@ -127,15 +127,15 @@ function createChequeredTexture(gl, renderingInfo, flicker, lightColor, darkColo
 
 	// Upload the checkerboard pattern to the texture
 	gl.texImage2D(
-		gl.TEXTURE_2D,     
-		0,                 
-		gl.RGBA,           
-		textureSize,       
-		textureSize,       
-		0,                 
-		gl.RGBA,          
-		gl.UNSIGNED_BYTE,  
-		imageData          
+		gl.TEXTURE_2D,
+		0,
+		gl.RGBA,
+		textureSize,
+		textureSize,
+		0,
+		gl.RGBA,
+		gl.UNSIGNED_BYTE,
+		imageData
 	);
 
 	// Set texture parameters
@@ -147,33 +147,92 @@ function createChequeredTexture(gl, renderingInfo, flicker, lightColor, darkColo
 	return texture;
 }
 
-function createDotTexture(gl, renderingInfo) {
-	// Create and set up the dot pattern texture
-	const dotCanvas = document.createElement('canvas');
-	dotCanvas.width = 10;
-	dotCanvas.height = 10;
-	const ctx = dotCanvas.getContext('2d');
+// Generate random positions for the dots
+const textureSize = 512; // Texture dimensions (must be powers of two)
+const dotCount = 750; // Total number of dots
+const positions = [];
+for (let i = 0; i < dotCount; i++) {
+	// Generate random x and y positions within the texture bounds
+	const x = Math.random() * textureSize; // Range: [0, textureSize)
+	const y = Math.random() * textureSize; // Range: [0, textureSize)
+	positions.push({ x, y });
+}
 
-	// Draw dot pattern
-	ctx.fillStyle = `rgba(${renderingInfo.dark})`;
-	ctx.fillRect(0, 0, 10, 10);
-	ctx.fillStyle = `rgba(${renderingInfo.light})`;
-	ctx.beginPath();
-	ctx.arc(5, 5, 3, 0, 2 * Math.PI);
-	ctx.fill();
+function createDotTexture(gl, renderingInfo, flicker, lightColor, darkColor) {
+	const dotRadius = 8; // Radius of each dot in pixels
 
+	// Create a new texture
 	const texture = gl.createTexture();
 	gl.bindTexture(gl.TEXTURE_2D, texture);
-	gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, dotCanvas);
+
+	const imageData = new Uint8Array(textureSize * textureSize * 4);
+	if (flicker) {
+		// Create blank image data with a white background		
+		for (let i = 0; i < imageData.length; i += 4) {
+			imageData[i] = 255; // Red
+			imageData[i + 1] = 255; // Green
+			imageData[i + 2] = 255; // Blue
+			imageData[i + 3] = 255; // Alpha
+		}
+	}
+	else {
+		// Helper function to draw a dot
+		function drawDot(x, y, radius, color) {
+			const centerX = Math.round(x);
+			const centerY = Math.round(y);
+
+			for (let offsetY = -radius; offsetY <= radius; offsetY++) {
+				for (let offsetX = -radius; offsetX <= radius; offsetX++) {
+					const distance = Math.sqrt(offsetX ** 2 + offsetY ** 2);
+					if (distance <= radius) {
+						const pixelX = centerX + offsetX;
+						const pixelY = centerY + offsetY;
+
+						// Ensure the pixel is within bounds
+						if (pixelX >= 0 && pixelX < textureSize && pixelY >= 0 && pixelY < textureSize) {
+							const index = (pixelY * textureSize + pixelX) * 4;
+							imageData[index] = color[0]; // Red
+							imageData[index + 1] = color[1]; // Green
+							imageData[index + 2] = color[2]; // Blue
+							imageData[index + 3] = 255; // Alpha
+						}
+					}
+				}
+			}
+		}
+
+		// Draw dots using alternating colors
+		positions.forEach((pos, index) => {
+			const color = index < dotCount / 2 ? lightColor : darkColor;
+			drawDot(pos.x, pos.y, dotRadius, color);
+		});
+	}
+	// Upload the texture data to WebGL
+	gl.texImage2D(
+		gl.TEXTURE_2D,
+		0,
+		gl.RGBA,
+		textureSize,
+		textureSize,
+		0,
+		gl.RGBA,
+		gl.UNSIGNED_BYTE,
+		imageData
+	);
+
+	// Set texture parameters
 	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.REPEAT);
 	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.REPEAT);
-	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
-	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
 
 	return texture;
 }
 
+
 export function setStimulusColour(gl, renderingInfo) {
+	const lightColor = renderingInfo.lightColor;
+	const darkColor = renderingInfo.darkColor;
 
 	resizeCanvasToDisplaySize(gl.canvas);
 	gl.enable(gl.SCISSOR_TEST);
@@ -200,8 +259,6 @@ export function setStimulusColour(gl, renderingInfo) {
 		case 'chequered':
 			// Set up chequered pattern texture
 			let chequeredTexture;
-			const lightColor = renderingInfo.lightColor;
-			const darkColor = renderingInfo.darkColor;
 
 			if (renderingInfo.flicker == true) {
 				chequeredTexture = createChequeredTexture(gl, renderingInfo, true, lightColor, darkColor);
@@ -212,7 +269,13 @@ export function setStimulusColour(gl, renderingInfo) {
 			break;
 		case 'dot':
 			// Set up dot pattern texture
-			const dotTexture = createDotTexture(gl, renderingInfo);
+			let dotTexture;
+
+			if (renderingInfo.flicker == true) {
+				dotTexture = createDotTexture(gl, renderingInfo, true, lightColor, darkColor);
+			} else {
+				dotTexture = createDotTexture(gl, renderingInfo, false, lightColor, darkColor);
+			}
 			gl.bindTexture(gl.TEXTURE_2D, dotTexture);
 			break;
 		default:

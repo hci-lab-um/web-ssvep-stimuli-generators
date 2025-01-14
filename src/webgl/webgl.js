@@ -147,18 +147,31 @@ function createChequeredTexture(gl, renderingInfo, flicker, lightColor, darkColo
 	return texture;
 }
 
-// Generate random positions for the dots
 const textureSize = 512; // Texture dimensions (must be powers of two)
 const dotCount = 750; // Total number of dots
-const positions = [];
-for (let i = 0; i < dotCount; i++) {
-	// Generate random x and y positions within the texture bounds
-	const x = Math.random() * textureSize; // Range: [0, textureSize)
-	const y = Math.random() * textureSize; // Range: [0, textureSize)
-	positions.push({ x, y });
+const buttonPositions = {}; // Dictionary to store positions for each button
+const buttonIds = []; // List to store button IDs
+
+// Function to generate random positions
+function generateRandomPositions() {
+	const pos = [];
+	for (let i = 0; i < dotCount; i++) {
+		const x = Math.random() * textureSize; // Range: [0, textureSize)
+		const y = Math.random() * textureSize; // Range: [0, textureSize)
+		pos.push({ x, y });
+	}
+	return pos;
 }
 
-function createDotTexture(gl, renderingInfo, flicker, lightColor, darkColor) {
+// Function to get positions for a specific button
+function getPositionsForButton(buttonId) {
+	if (!buttonPositions[buttonId]) {
+		buttonPositions[buttonId] = generateRandomPositions();
+	}
+	return buttonPositions[buttonId];
+}
+
+function createDotTexture(gl, renderingInfo, flicker, lightColor, darkColor, positions) {
 	const dotRadius = 8; // Radius of each dot in pixels
 
 	// Create a new texture
@@ -229,7 +242,6 @@ function createDotTexture(gl, renderingInfo, flicker, lightColor, darkColor) {
 	return texture;
 }
 
-
 export function setStimulusColour(gl, renderingInfo) {
 	const lightColor = renderingInfo.lightColor;
 	const darkColor = renderingInfo.darkColor;
@@ -269,12 +281,17 @@ export function setStimulusColour(gl, renderingInfo) {
 			break;
 		case 'dot':
 			// Set up dot pattern texture
+			if (!buttonIds.includes(renderingInfo.element.id)) {
+				buttonIds.push(renderingInfo.element.id);
+				positions = generateRandomPositions();
+			}
+			let positions = getPositionsForButton(renderingInfo.element.id);
 			let dotTexture;
 
 			if (renderingInfo.flicker == true) {
-				dotTexture = createDotTexture(gl, renderingInfo, true, lightColor, darkColor);
+				dotTexture = createDotTexture(gl, renderingInfo, true, lightColor, darkColor, positions);
 			} else {
-				dotTexture = createDotTexture(gl, renderingInfo, false, lightColor, darkColor);
+				dotTexture = createDotTexture(gl, renderingInfo, false, lightColor, darkColor, positions);
 			}
 			gl.bindTexture(gl.TEXTURE_2D, dotTexture);
 			break;

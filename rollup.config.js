@@ -12,6 +12,7 @@ import css from "rollup-plugin-import-css";
 import node_resolve from "@rollup/plugin-node-resolve";
 import { babel } from '@rollup/plugin-babel';
 import commonjs from '@rollup/plugin-commonjs';
+import InlineSvg from 'rollup-plugin-inline-svg';
 
 /**
  * @type {import('rollup').RollupOptions}
@@ -34,6 +35,7 @@ const config = {
   //   ...Object.keys(pkg.dependencies || {})
   //  ],
   plugins: [
+    InlineSvg(),
     commonjs(),
     node_resolve(),
     babel({

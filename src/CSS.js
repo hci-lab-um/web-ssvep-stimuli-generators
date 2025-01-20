@@ -1,6 +1,7 @@
 import * as approximation from './css/approximation/index.js'
 import * as periodic from './css/periodic/index.js'
 import SSVEP from './SSVEP.js'
+import patternSvg from './resources/random-dot-stimuli.svg';
 
 export class CSS extends SSVEP {
 
@@ -39,29 +40,26 @@ export class CSS extends SSVEP {
                 // Functionality to be able to change colour of dots in Patterns.DOT 
                 o.element.style.backgroundColor = `rgba(255,255,255,1)`;
 
-                await fetch('./dist/src/resources/random-dot-stimuli.svg')
-                    .then(response => response.text())
-                    .then(svgText => {
-                        // Parse SVG
-                        const parser = new DOMParser();
-                        const svgDocument = parser.parseFromString(svgText, "image/svg+xml");
-                        const svgElement = svgDocument.documentElement;
+                // Parse SVG
+                const parser = new DOMParser();
+                const svgDocument = parser.parseFromString(patternSvg, "image/svg+xml");
+                const svgElement = svgDocument.documentElement;
 
-                        const mainColor = `rgb(${o.light.slice(0, -2)})`;
-                        const secondaryColor = `rgb(${o.dark.slice(0, -2)})`;
+                const mainColor = `rgb(${o.light.slice(0, -2)})`;
+                const secondaryColor = `rgb(${o.dark.slice(0, -2)})`;
 
-                        // Find the <style> block                        
-                        const styleElement = svgElement.querySelector('style');
-                        if (styleElement) {
-                            // Update the CSS variables
-                            const updatedStyle = styleElement.textContent
-                                .replace(/--main-color:[^;]+;/, `--main-color:${mainColor};`)
-                                .replace(/--secondary-color:[^;]+;/, `--secondary-color:${secondaryColor};`);
-                            styleElement.textContent = updatedStyle;
-                        }
+                // Find the <style> block                        
+                const styleElement = svgElement.querySelector('style');
+                if (styleElement) {
+                    // Update the CSS variables
+                    const updatedStyle = styleElement.textContent
+                        .replace(/--main-color:[^;]+;/, `--main-color:${mainColor};`)
+                        .replace(/--secondary-color:[^;]+;/, `--secondary-color:${secondaryColor};`);
+                    styleElement.textContent = updatedStyle;
+                }
 
-                        updatedSvgText = new XMLSerializer().serializeToString(svgDocument);
-                    });
+                updatedSvgText = new XMLSerializer().serializeToString(svgDocument);
+
             }
             o.element.style.visibility = "visible"
 

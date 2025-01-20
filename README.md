@@ -12,19 +12,23 @@ There are 4 stimuli generators in this repository, `CSS+Square Wave Approximatio
 After importing the library, you can create any number of stimuli on the page using the following `data-*` attributes:
 
 1. `data-frequency`: specifying the SSVEP stimulus frequency
-2. `data-light-color`: specifying the color of the SSVEP stimulus (N.B. `data-dark-color` currently defaults to `transparent`) **in RGBA format** (e.g. `1,1,1,1` for white)
-3. `data-phase-shift`: specifying the phase shift (frames delay) for the SSVEP stimulus
-
-Stimuli can be defined as follows:
-
-```html
-   <button data-frequency="6.67" data-dark-color="0,0,0,1" data-light-color="1,1,1,1" data-phase-shift="0">Content</button>
-   <button data-frequency="7" data-dark-color="0,0,0,1" data-light-color="1,1,1,1" data-phase-shift="0">Content</button>
-   <button data-frequency="8.57" data-dark-color="0,0,0,1" data-light-color="1,1,1,1" data-phase-shift="0">Content</button>
-```
+2. `data-light-color`: specifying the light color of the flickering SSVEP stimulus
+3. `data-dark-color`: specifying the dark color of the flickering SSVEP stimulus 
+4. `data-phase-shift`: specifying the phase shift (frames delay) for the SSVEP stimulus
+5. `data-pattern`: specifying the flickering button's pattern. You can choose from `solid`, `dot` or `chequered` pattern types.
 
 ### Begin Stimuli Generation
 To begin stimuli generation, you must select your HTML elements and add to the manager
+
+### 1. CSS
+Stimuli can be defined as follows for CSS:
+
+```html
+   <button data-frequency="6.67" data-dark-color="0,0,0,1" data-light-color="255,255,255,1" data-phase-shift="0" data-pattern="solid">Button 1</button>
+   <button data-frequency="7" data-dark-color="0,255,0,1" data-light-color="0,0,255,1" data-phase-shift="0" data-pattern="chequered">Button 2</button>
+   <button data-frequency="8.57" data-dark-color="255,0,0,1" data-light-color="0,0,255,1" data-phase-shift="0" data-pattern="dot">Button 3</button>
+```
+
 ```html
 <script type="module">
 
@@ -34,12 +38,7 @@ To begin stimuli generation, you must select your HTML elements and add to the m
 
    // ----------- CSS Methods -----------
    const manager = new stimuli.CSS('periodic', elements.length)
-   // const manager = new stimuli.CSS('approximation', elements.length)
-
-   // ----------- WebGL Methods -----------
-   // const canvas = document.body.querySelector('canvas')
-   // const manager = new stimuli.WebGL('periodic', elements.length, canvas)
-   // const manager = new stimuli.WebGL('approximation', elements.length, canvas)
+   // const manager = new stimuli.CSS('approximation', elements.length)   
 
    elements.forEach(el => manager.set(el)) // Add Elements
    manager.start() // Start Stimuli Generation
@@ -47,6 +46,60 @@ To begin stimuli generation, you must select your HTML elements and add to the m
 </script>
 ```
 
+
+### 2. WebGL
+Stimuli can be defined as follows for WebGL:
+
+```html
+   <canvas id="canvas"></canvas>
+   <button data-frequency="6.67" data-dark-color="0,0,0,1" data-light-color="255,255,255,1" data-phase-shift="0" data-pattern="solid">
+    <span class="button-text">Button 1</span>
+   </button>
+   <button data-frequency="7" data-dark-color="0,255,0,1" data-light-color="0,0,255,1" data-phase-shift="0" data-pattern="chequered">
+    <span class="button-text">Button 2</span>
+   </button>
+   <button data-frequency="8.57" data-dark-color="255,0,0,1" data-light-color="0,0,255,1" data-phase-shift="0" data-pattern="dot">
+    <span class="button-text">Button 3</span>
+   </button>
+```
+
+```html
+<script type="module">
+
+  import * as stimuli from "./src/index.js"
+
+   const elements = document.querySelectorAll('button')
+
+   // ----------- WebGL Methods -----------
+   const canvas = document.body.querySelector('canvas')
+   const manager = new stimuli.WebGL('periodic', canvas, elements.length)
+   // const manager = new stimuli.WebGL('approximation', canvas, elements.length) 
+
+   elements.forEach(el => manager.set(el)) // Add Elements
+   manager.start() // Start Stimuli Generation
+
+</script>
+```
+
+```css 
+/* Styling the canvas so that it fills the whole screen and the button text above the canvas */
+.button-text {
+    position: relative;
+    z-index: 2; /* Contains a higher z-index than the canvas */   
+}
+
+#canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1; /* Contains a lower z-index than the canvas */
+}
+```
+
+
+### Add Stimuli
 You can add more stimuli by passing one or more elements to the `start()` method:
 
 ``` javascript
@@ -71,13 +124,11 @@ Or stop a subset by passing one or more elements as the first argument:
 ```
 
 
-
 ## Roadmap
 - Add and remove elements based on visibility in the window.
 - Dynamically change the frequency values applied to an element
    - Automatically assign for maximum discriminability.
 - Position WebGL Canvas behind arbitrary elements across an entire a webpage *with scrolling*.
-- Implement CSS data-dark-color attribute changes
 - Expose a way to assign your own CSS rules and/or WebGL intensities
 
 
@@ -99,3 +150,8 @@ Department of Systems & Control Engineering, Faculty of Engineering
 #### [Garrett Flynn](https://github.com/garrettmflynn)
 Founding Partner at [Brains@Play](https://github.com/brainsatplay) 
   - Refactored the libraries for publication (April 2022)
+
+#### [Daniel Calleja](https://github.com/daniel-calleja17) & (https://github.com/dcalleja17)
+Research Support Officer on the BrainWeb Project
+  - Arranged the functionality of `data-dark-color` (December 2024)
+  - Implemented different pattern types for stimuli for both CSS and WebGL (January 2025)

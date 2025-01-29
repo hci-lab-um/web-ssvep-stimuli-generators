@@ -52,7 +52,7 @@ export function getAnimationInfo(stimulusInfo, screenRefreshRate, id, updatedSvg
 
           keyframeString += `${currentInterval.toNumber()}% { 
                     background-image: url('${updatedSvgDataUrl}');
-                    background-position: ${randomX}% ${randomY}%; /* This line will only be printed if randomX and randomY are defined */
+                    background-position: ${randomX}% ${randomY}%;
                     transition: none;
                 }`;
         } else {

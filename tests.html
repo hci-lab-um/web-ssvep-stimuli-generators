@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <button data-frequency="6.67" data-dark-color="0,0,0,1" data-light-color="255,255,255,1" data-phase-shift="0"
+        data-pattern="solid">Button 1</button>
+    <button data-frequency="7" data-dark-color="0,255,0,1" data-light-color="0,0,255,1" data-phase-shift="0"
+        data-pattern="chequered">Button 2</button>
+    <button data-frequency="1" data-dark-color="255,0,0,1" data-light-color="0,0,255,1" data-phase-shift="0"
+        data-pattern="dot">Button 3</button>
+
+    <!-- BREAKS -->
+    <!-- <button data-frequency="8.57" data-dark-color="255,0,0,1" data-light-color="0,0,255,1" data-phase-shift="0"
+        data-pattern="dot">Button 3</button> -->
+
+
+    <script type="module">
+
+        import * as stimuli from "./dist/index.js"
+
+        const elements = document.querySelectorAll('button')
+
+        // ----------- CSS Methods -----------
+        const manager = new window.stimuli.CSS('approximation', elements.length)
+        // const manager = new stimuli.CSS('approximation', elements.length)   
+
+        elements.forEach(el => manager.set(el)) // Add Elements
+        manager.start() // Start Stimuli Generation
+
+    </script>
+</body>
+
+
+</html>

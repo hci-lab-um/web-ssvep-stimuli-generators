@@ -50,7 +50,7 @@ export default class SSVEP {
         o.element = el
 
         // Get Info
-        o.id = el.getAttribute('id') ?? Settings.ID;
+        o.id = el.getAttribute('id') ?? Math.floor(1000000 * Math.random());
         o.frequency = Number(el.getAttribute('data-frequency') ?? Settings.FREQUENCY);
 
         const lightColor = el.getAttribute('data-light-color') ?? Settings.LIGHT;

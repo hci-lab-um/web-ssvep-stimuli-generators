@@ -124,6 +124,58 @@ Or stop a subset by passing one or more elements as the first argument:
 ```
 
 
+### Node.js Example (Using CSS)
+To use the SSVEP stimuli library in a Node.js project:
+  1. Install via npm. Run the following command: `npm install ssvep-stimuli`.
+  2. Use the following code in your JavaScript file:
+
+```javascript 
+  const stimuli = require('./dist/index.js');
+
+  // Simulating HTML button elements for the example
+  const elements = [
+    { frequency: 6.67, lightColor: '255,255,255,1', darkColor: '0,0,0,1', phaseShift: 0, pattern: 'solid' },
+    { frequency: 7, lightColor: '0,0,255,1', darkColor: '0,255,0,1', phaseShift: 0, pattern: 'chequered' },
+    { frequency: 8.57, lightColor: '0,0,255,1', darkColor: '255,0,0,1', phaseShift: 0, pattern: 'dot' }
+  ];
+
+  const manager = new stimuli.CSS('approximation', elements.length);
+  // const manager = new window.stimuli.CSS('periodic', elements.length)   
+
+  elements.forEach(el => manager.set(el));
+  manager.start();
+```
+
+
+### Node.js Example (Using WebGL)
+To use the SSVEP stimuli library in a Node.js project:
+  1. Install via npm. Run the following command: `npm install ssvep-stimuli`.
+  2. Use the following code in your JavaScript file:
+
+```javascript 
+  const stimuli = require('./dist/index.js');
+
+  // For WebGL, you would typically need to initialise a WebGL context.
+  // Here, we assume you're using a package like `headless-gl` or similar.
+
+  const { createCanvas } = require('canvas'); // Example: 'canvas' package for WebGL context in Node.js
+  const canvas = createCanvas(800, 600); // Create a canvas to simulate the WebGL context
+
+  // Simulating HTML button elements for the example
+  const elements = [
+    { frequency: 6.67, lightColor: '255,255,255,1', darkColor: '0,0,0,1', phaseShift: 0, pattern: 'solid' },
+    { frequency: 7, lightColor: '0,0,255,1', darkColor: '0,255,0,1', phaseShift: 0, pattern: 'chequered' },
+    { frequency: 8.57, lightColor: '0,0,255,1', darkColor: '255,0,0,1', phaseShift: 0, pattern: 'dot' }
+  ];
+
+  const manager = new stimuli.WebGL('approximation', canvas, elements.length);
+  // const manager = new window.stimuli.WebGL('periodic', canvas, elements.length) 
+
+  elements.forEach(el => { manager.set(el); });
+  manager.start();
+```
+
+
 ## Roadmap
 - Add and remove elements based on visibility in the window.
 - Dynamically change the frequency values applied to an element

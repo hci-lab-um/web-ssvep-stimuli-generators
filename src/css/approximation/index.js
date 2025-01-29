@@ -11,13 +11,16 @@ function setUpKeyframe(keyframeString, keyframeName) {
 
 export function getAnimationInfo(stimulusInfo, screenRefreshRate, id, updatedSvgText) {
 
-  const type = " step-end infinite", name = "stimulus_" + id
+  const maxFrames = 60,
+    type = " step-end infinite", name = "stimulus_" + id
 
   var noOfSeconds = calculateNumberOfSeconds(stimulusInfo.frequency),
     currentInterval = new Decimal(0),
     keyframeString = "",
     lastState;
-  const totalNumberOfFrames = new Decimal(noOfSeconds).times(screenRefreshRate).ceil().toNumber(), keyframeInterval = new Decimal(100).div(new Decimal(totalNumberOfFrames));
+
+  const totalNumberOfFrames = Math.min(new Decimal(noOfSeconds).times(screenRefreshRate).ceil().toNumber(), maxFrames),
+    keyframeInterval = new Decimal(100).div(new Decimal(totalNumberOfFrames));
 
   const randomX = Math.floor(Math.random() * 101); // Random value from 0 to 100
   const randomY = Math.floor(Math.random() * 101); // Random value from 0 to 100

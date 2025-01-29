@@ -32,16 +32,16 @@ Stimuli can be defined as follows for CSS:
 ```html
 <script type="module">
 
-  import * as stimuli from "./src/index.js"
+  import * as stimuli from "./dist/index.js"
 
-   const elements = document.querySelectorAll('button')
+  const elements = document.querySelectorAll('button')
 
-   // ----------- CSS Methods -----------
-   const manager = new stimuli.CSS('periodic', elements.length)
-   // const manager = new stimuli.CSS('approximation', elements.length)   
+  // ----------- CSS Methods -----------
+  const manager = new window.stimuli.CSS('approximation', elements.length)
+  // const manager = new window.stimuli.CSS('periodic', elements.length)   
 
-   elements.forEach(el => manager.set(el)) // Add Elements
-   manager.start() // Start Stimuli Generation
+  elements.forEach(el => manager.set(el)) // Add Elements
+  manager.start() // Start Stimuli Generation
 
 </script>
 ```
@@ -66,14 +66,14 @@ Stimuli can be defined as follows for WebGL:
 ```html
 <script type="module">
 
-  import * as stimuli from "./src/index.js"
+  import * as stimuli from "./dist/index.js"
 
    const elements = document.querySelectorAll('button')
 
    // ----------- WebGL Methods -----------
    const canvas = document.body.querySelector('canvas')
-   const manager = new stimuli.WebGL('periodic', canvas, elements.length)
-   // const manager = new stimuli.WebGL('approximation', canvas, elements.length) 
+   const manager = new window.stimuli.WebGL('approximation', canvas, elements.length)
+   // const manager = new window.stimuli.WebGL('periodic', canvas, elements.length) 
 
    elements.forEach(el => manager.set(el)) // Add Elements
    manager.start() // Start Stimuli Generation

@@ -5,33 +5,78 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <style>
+        .button-text {
+            position: relative;
+            z-index: 2;
+            /* Contains a higher z-index than the canvas */
+        }
+
+        #canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 1;
+            /* Contains a lower z-index than the canvas */
+        }
+    </style>
 </head>
 
 <body>
+
+    <!-- HTML -->
     <button data-frequency="6.67" data-dark-color="0,0,0,1" data-light-color="255,255,255,1" data-phase-shift="0"
         data-pattern="solid">Button 1</button>
     <button data-frequency="7" data-dark-color="0,255,0,1" data-light-color="0,0,255,1" data-phase-shift="0"
         data-pattern="chequered">Button 2</button>
     <button data-frequency="1" data-dark-color="255,0,0,1" data-light-color="0,0,255,1" data-phase-shift="0"
         data-pattern="dot">Button 3</button>
+    <button data-frequency="8.57" data-dark-color="255,0,0,1" data-light-color="0,0,255,1" data-phase-shift="0"
+        data-pattern="dot">Button 3</button>
 
-    <!-- BREAKS -->
-    <!-- <button data-frequency="8.57" data-dark-color="255,0,0,1" data-light-color="0,0,255,1" data-phase-shift="0"
-        data-pattern="dot">Button 3</button> -->
-
+    <!-- WEBGL -->
+    <!-- <canvas id="canvas"></canvas>
+    <button data-frequency="6.67" data-dark-color="0,0,0,1" data-light-color="255,255,255,1" data-phase-shift="0"
+        data-pattern="solid">
+        <span class="button-text">Button 1</span>
+    </button>
+    <button data-frequency="7" data-dark-color="0,255,0,1" data-light-color="0,0,255,1" data-phase-shift="0"
+        data-pattern="chequered">
+        <span class="button-text">Button 2</span>
+    </button>
+    <button data-frequency="8.57" data-dark-color="255,0,0,1" data-light-color="0,0,255,1" data-phase-shift="0"
+        data-pattern="dot">
+        <span class="button-text">Button 3</span>
+    </button> -->
 
     <script type="module">
 
+        // HTML
         import * as stimuli from "./dist/index.js"
 
         const elements = document.querySelectorAll('button')
 
         // ----------- CSS Methods -----------
         const manager = new window.stimuli.CSS('approximation', elements.length)
-        // const manager = new stimuli.CSS('approximation', elements.length)   
+        // const manager = new window.stimuli.CSS('periodic', elements.length)   
 
         elements.forEach(el => manager.set(el)) // Add Elements
         manager.start() // Start Stimuli Generation
+
+        // WEBGL
+        // import * as stimuli from "./dist/index.js"
+
+        // const elements = document.querySelectorAll('button')
+
+        // // ----------- WebGL Methods -----------
+        // const canvas = document.body.querySelector('canvas')
+        // const manager = new window.stimuli.WebGL('approximation', canvas, elements.length)
+        // // const manager = new window.stimuli.WebGL('periodic', canvas, elements.length)
+
+        // elements.forEach(el => manager.set(el)) // Add Elements
+        // manager.start() // Start Stimuli Generation
 
     </script>
 </body>

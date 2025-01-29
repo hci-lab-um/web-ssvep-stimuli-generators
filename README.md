@@ -140,7 +140,7 @@ To use the SSVEP stimuli library in a Node.js project:
   ];
 
   const manager = new stimuli.CSS('approximation', elements.length);
-  // const manager = new window.stimuli.CSS('periodic', elements.length)   
+  // const manager = new stimuli.CSS('periodic', elements.length); 
 
   elements.forEach(el => manager.set(el));
   manager.start();
@@ -169,7 +169,7 @@ To use the SSVEP stimuli library in a Node.js project:
   ];
 
   const manager = new stimuli.WebGL('approximation', canvas, elements.length);
-  // const manager = new window.stimuli.WebGL('periodic', canvas, elements.length) 
+  // const manager = new stimuli.WebGL('periodic', canvas, elements.length); 
 
   elements.forEach(el => { manager.set(el); });
   manager.start();

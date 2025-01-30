@@ -11,15 +11,16 @@ function setUpKeyframe(keyframeString, keyframeName) {
 
 export function getAnimationInfo(stimulusInfo, screenRefreshRate, id, updatedSvgText) {
 
-  const maxFrames = 120,
-    type = " step-end infinite", name = "stimulus_" + id
+  // const maxFrames = 120,
+  const type = " step-end infinite", name = "stimulus_" + id
 
   var noOfSeconds = calculateNumberOfSeconds(stimulusInfo.frequency),
     currentInterval = new Decimal(0),
     keyframeString = "",
     lastState;
 
-  const totalNumberOfFrames = Math.min(new Decimal(noOfSeconds).times(screenRefreshRate).ceil().toNumber(), maxFrames),
+  // const totalNumberOfFrames = Math.min(new Decimal(noOfSeconds).times(screenRefreshRate).ceil().toNumber(), maxFrames),
+  const totalNumberOfFrames = new Decimal(noOfSeconds).times(screenRefreshRate).ceil().toNumber(),
     keyframeInterval = new Decimal(100).div(new Decimal(totalNumberOfFrames));
 
   const randomX = Math.floor(Math.random() * 101); // Random value from 0 to 100
@@ -84,6 +85,25 @@ export function getAnimationInfo(stimulusInfo, screenRefreshRate, id, updatedSvg
         }
         break;
 
+      case Patterns.LINE:
+        const isLineVisible = squareWaveResult > 0;
+
+        if (isLineVisible) {
+          const updatedSvgDataUrl = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(updatedSvgText)}`;
+
+          keyframeString += `${currentInterval.toNumber()}% { 
+                    background-image: url('${updatedSvgDataUrl}');
+                    background-position: ${randomX}% ${randomY}%;
+                    transition: none;
+                    opacity: 0.8;
+                }`;
+        } else {
+          keyframeString += `${currentInterval.toNumber()}% { 
+              background-image: none;
+              background-color: rgba(${stimulusInfo.dark});
+          }`;
+        }
+        break;
       default:
         throw new Error(`Unknown pattern: ${stimulusInfo.pattern}`);
     }

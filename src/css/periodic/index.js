@@ -49,6 +49,20 @@ export function getAnimationInfo(stimulusInfo, screenRefreshRate, id, updatedSvg
             background-position: 0 0, 0 20px, 20px -20px, -20px 0px; 
           }
     }`,
+
+    [Patterns.LINE]: (id) => `
+    @keyframes line-${id} {
+      0%  { 
+            background-image: url('${updatedSvgDataUrl}');
+            background-position: ${randomX}% ${randomY}%;
+            transition: none;
+            opacity: 0.8;
+          }
+      50% { 
+            background-image: none;
+            background-color: rgba(${stimulusInfo.dark});
+          }
+    }`,
   };
 
   const seconds = "s ", type = " step-end infinite", name = stimulusInfo.pattern || Patterns.SOLID;

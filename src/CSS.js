@@ -1,7 +1,8 @@
 import * as approximation from './css/approximation/index.js'
 import * as periodic from './css/periodic/index.js'
 import SSVEP from './SSVEP.js'
-import patternSvg from './resources/random-dot-stimuli.svg';
+import dotSvg from './resources/random-dot-stimuli.svg';
+import lineSvg from './resources/random-line-stimuli.svg';
 
 export class CSS extends SSVEP {
 
@@ -30,47 +31,49 @@ export class CSS extends SSVEP {
         let updatedSvgText = ''
 
         // Apply Inline Styling
+        function setBackgroundColor(element, color) {
+            const rgbaVals = color.split(',');
+            const rgb = rgbaVals.slice(0, 3).map(v => 255 * (v ?? 1));
+            element.style.backgroundColor = `rgba(${rgb},${rgbaVals?.[3] ?? 1})`;
+        }
+
+        function updateSvgColors(svgText, lightColor, darkColor, mainColorVar, secondaryColorVar) {
+            const parser = new DOMParser();
+            const svgDocument = parser.parseFromString(svgText, "image/svg+xml");
+            const svgElement = svgDocument.documentElement;
+
+            const mainColor = `rgb(${lightColor.slice(0, -2)})`;
+            const secondaryColor = `rgb(${darkColor.slice(0, -2)})`;
+
+            const styleElement = svgElement.querySelector('style');
+            if (styleElement) {
+                const updatedStyle = styleElement.textContent
+                    .replace(new RegExp(`--${mainColorVar}:[^;]+;`), `--${mainColorVar}:${mainColor};`)
+                    .replace(new RegExp(`--${secondaryColorVar}:[^;]+;`), `--${secondaryColorVar}:${secondaryColor};`);
+                styleElement.textContent = updatedStyle;
+            }
+
+            return new XMLSerializer().serializeToString(svgDocument);
+        }
+
         if (o.light) {
-            if (o.pattern !== 'dot') {
-                const rgbaVals = o.light.split(',')
-                const rgb = rgbaVals.slice(0, 3).map(v => 255 * (v ?? 1))
-                o.element.style.backgroundColor = `rgba(${rgb},${rgbaVals?.[3] ?? 1})`;
-            }
-            else {
-                // Functionality to be able to change colour of dots in Patterns.DOT 
+            if (o.pattern === 'line') {
+                setBackgroundColor(o.element, o.dark);
+                updatedSvgText = updateSvgColors(lineSvg, o.light, o.dark, 'line-color', 'background-color');
+            } else if (o.pattern === 'dot') {
                 o.element.style.backgroundColor = `rgba(255,255,255,1)`;
-
-                // Parse SVG
-                const parser = new DOMParser();
-                const svgDocument = parser.parseFromString(patternSvg, "image/svg+xml");
-                const svgElement = svgDocument.documentElement;
-
-                const mainColor = `rgb(${o.light.slice(0, -2)})`;
-                const secondaryColor = `rgb(${o.dark.slice(0, -2)})`;
-
-                // Find the <style> block                        
-                const styleElement = svgElement.querySelector('style');
-                if (styleElement) {
-                    // Update the CSS variables
-                    const updatedStyle = styleElement.textContent
-                        .replace(/--main-color:[^;]+;/, `--main-color:${mainColor};`)
-                        .replace(/--secondary-color:[^;]+;/, `--secondary-color:${secondaryColor};`);
-                    styleElement.textContent = updatedStyle;
-                }
-
-                updatedSvgText = new XMLSerializer().serializeToString(svgDocument);
-
+                updatedSvgText = updateSvgColors(dotSvg, o.light, o.dark, 'main-color', 'secondary-color');
+            } else {
+                setBackgroundColor(o.element, o.light);
             }
-            o.element.style.visibility = "visible"
 
-            // Get Animation Info
+            o.element.style.visibility = "visible";
+
             var animationInfo = this.technique.getAnimationInfo(o, this.refreshRate, o.id, updatedSvgText);
             var cycleDurationString = String(animationInfo.duration).concat("s ", animationInfo.name, animationInfo.type);
 
-            // Apply Animation
             this.style.sheet.insertRule(animationInfo.rule, this.style.cssRules?.length ?? 0);
             o.element.style.animation = cycleDurationString;
-
         }
     }
 }

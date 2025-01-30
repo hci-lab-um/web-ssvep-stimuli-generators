@@ -66,7 +66,9 @@ const config = {
     copy({
       patterns: [
         '../src/**/*.css',
-        './src/resources/random-dot-stimuli.svg' // Include the SVG file
+        // Include the SVG files
+        './src/resources/random-dot-stimuli.svg',
+        './src/resources/random-line-stimuli.svg'
       ],
       rootDir: './',
     }),

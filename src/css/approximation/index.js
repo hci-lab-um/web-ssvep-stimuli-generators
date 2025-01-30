@@ -11,7 +11,7 @@ function setUpKeyframe(keyframeString, keyframeName) {
 
 export function getAnimationInfo(stimulusInfo, screenRefreshRate, id, updatedSvgText) {
 
-  const maxFrames = 60,
+  const maxFrames = 120,
     type = " step-end infinite", name = "stimulus_" + id
 
   var noOfSeconds = calculateNumberOfSeconds(stimulusInfo.frequency),

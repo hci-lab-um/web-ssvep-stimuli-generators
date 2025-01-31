@@ -150,6 +150,7 @@ function createChequeredTexture(gl, renderingInfo, flicker, lightColor, darkColo
 
 const textureSize = 512; // Texture dimensions (must be powers of two)
 const dotCount = 750; // Total number of dots
+const lineCount = 40; // Total number of lines
 const buttonPositions = {}; // Dictionary to store positions for each button
 const buttonIds = []; // List to store button IDs
 
@@ -164,10 +165,21 @@ function generateRandomPositions() {
 	return pos;
 }
 
+function generateRandomPositionsAndAngle() {
+	const pos = [];
+	for (let i = 0; i < lineCount; i++) {
+		const x = Math.random() * textureSize; // Range: [0, textureSize)
+		const y = Math.random() * textureSize; // Range: [0, textureSize)
+		const angle = Math.random() * 2 * Math.PI;
+		pos.push({ x, y, angle });
+	}
+	return pos;
+}
+
 // Function to get positions for a specific button
-function getPositionsForButton(buttonId) {
+function getPositionsForButton(buttonId, pattern) {
 	if (!buttonPositions[buttonId]) {
-		buttonPositions[buttonId] = generateRandomPositions();
+		buttonPositions[buttonId] = pattern === 'line' ? generateRandomPositionsAndAngle() : generateRandomPositions();
 	}
 	return buttonPositions[buttonId];
 }
@@ -243,6 +255,73 @@ function createDotTexture(gl, renderingInfo, flicker, lightColor, darkColor, pos
 	return texture;
 }
 
+function createLineTexture(gl, renderingInfo, flicker, rodColor, bgColor, positions) {
+	const lineLength = 60;
+	const texture = gl.createTexture();
+	gl.bindTexture(gl.TEXTURE_2D, texture);
+
+	const imageData = new Uint8Array(textureSize * textureSize * 4);
+
+	// Set the background color
+	for (let i = 0; i < imageData.length; i += 4) {
+		imageData[i] = bgColor[0]; // Red
+		imageData[i + 1] = bgColor[1]; // Green
+		imageData[i + 2] = bgColor[2]; // Blue
+		imageData[i + 3] = 255; // Alpha
+	}
+
+	// Helper function to draw a line
+	function drawLine(x, y, length, color, angle, thickness = 10) {
+		const centerX = Math.round(x);
+		const centerY = Math.round(y);
+		const halfLength = length / 2;
+
+		for (let i = -halfLength; i <= halfLength; i++) {
+			const offsetX = Math.round(i * Math.cos(angle));
+			const offsetY = Math.round(i * Math.sin(angle));
+
+			for (let t = -Math.floor(thickness / 2); t <= Math.floor(thickness / 2); t++) {
+				const pixelX = centerX + offsetX + Math.round(t * Math.sin(angle));
+				const pixelY = centerY + offsetY - Math.round(t * Math.cos(angle));
+
+				// Ensure the pixel is within bounds
+				if (pixelX >= 0 && pixelX < textureSize && pixelY >= 0 && pixelY < textureSize) {
+					const index = (pixelY * textureSize + pixelX) * 4;
+					imageData[index] = color[0]; // Red
+					imageData[index + 1] = color[1]; // Green
+					imageData[index + 2] = color[2]; // Blue
+					imageData[index + 3] = 255; // Alpha
+				}
+			}
+		}
+	}
+
+	if (!flicker) {
+		positions.forEach((pos, index) => {
+			drawLine(pos.x, pos.y, lineLength, rodColor, pos.angle);
+		});
+	}
+
+	gl.texImage2D(
+		gl.TEXTURE_2D,
+		0,
+		gl.RGBA,
+		textureSize,
+		textureSize,
+		0,
+		gl.RGBA,
+		gl.UNSIGNED_BYTE,
+		imageData
+	);
+
+	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.REPEAT);
+	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.REPEAT);
+	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+
+	return texture;
+}
+
 export function setStimulusColour(gl, renderingInfo) {
 	const lightColor = renderingInfo.lightColor;
 	const darkColor = renderingInfo.darkColor;
@@ -286,7 +365,7 @@ export function setStimulusColour(gl, renderingInfo) {
 				buttonIds.push(renderingInfo.element.id);
 				positions = generateRandomPositions();
 			}
-			let positions = getPositionsForButton(renderingInfo.element.id);
+			let positions = getPositionsForButton(renderingInfo.element.id, renderingInfo.pattern);
 			let dotTexture;
 
 			if (renderingInfo.flicker == true) {
@@ -296,6 +375,24 @@ export function setStimulusColour(gl, renderingInfo) {
 			}
 			gl.bindTexture(gl.TEXTURE_2D, dotTexture);
 			break;
+
+		case Patterns.LINE:
+			// Set up line pattern texture
+			if (!buttonIds.includes(renderingInfo.element.id)) {
+				buttonIds.push(renderingInfo.element.id);
+				positions2 = generateRandomPositionsAndAngle();
+			}
+			let positions2 = getPositionsForButton(renderingInfo.element.id, renderingInfo.pattern);
+			let lineTexture;
+
+			if (renderingInfo.flicker == true) {
+				lineTexture = createLineTexture(gl, renderingInfo, true, lightColor, darkColor, positions2);
+			} else {
+				lineTexture = createLineTexture(gl, renderingInfo, false, lightColor, darkColor, positions2);
+			}
+			gl.bindTexture(gl.TEXTURE_2D, lineTexture);
+			break;
+
 		default:
 			gl.bindTexture(gl.TEXTURE_2D, renderingInfo.texture);
 			break;

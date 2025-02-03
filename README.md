@@ -15,7 +15,19 @@ After importing the library, you can create any number of stimuli on the page us
 2. `data-light-color`: specifying the light color of the flickering SSVEP stimulus
 3. `data-dark-color`: specifying the dark color of the flickering SSVEP stimulus 
 4. `data-phase-shift`: specifying the phase shift (frames delay) for the SSVEP stimulus
-5. `data-pattern`: specifying the flickering button's pattern. You can choose from `solid`, `dot` or `chequered` pattern types.
+5. `data-pattern`: specifying the flickering button's pattern. You can choose from `solid`, `dot`, `chequered` or `line` pattern types.
+
+The `data-light-colour` and `data-dark-colour` attributes define how colors are applied based on the chosen flickering pattern:  
+
+- **Solid**: The stimulus alternates between `data-light-colour` and `data-dark-colour` to create a flickering effect.  
+- **Chequered**: The squares within the pattern will be displayed in `data-light-colour` and `data-dark-colour`.  
+- **Dot**: The dots will be displayed in `data-light-colour` and `data-dark-colour`, while the background remains **white**.  
+- **Line**: The **background** will be `data-dark-colour`, and the **lines** will be `data-light-colour`.  
+
+The following is a sample screenshot showcasing all four `data-pattern` types in action:
+
+![Flickering Stimuli in action](/src/resources/different_pattern_types.png)
+
 
 ### Begin Stimuli Generation
 To begin stimuli generation, you must select your HTML elements and add to the manager
@@ -27,6 +39,7 @@ Stimuli can be defined as follows for CSS:
    <button data-frequency="6.67" data-dark-color="0,0,0,1" data-light-color="255,255,255,1" data-phase-shift="0" data-pattern="solid">Button 1</button>
    <button data-frequency="7" data-dark-color="0,255,0,1" data-light-color="0,0,255,1" data-phase-shift="0" data-pattern="chequered">Button 2</button>
    <button data-frequency="8.57" data-dark-color="255,0,0,1" data-light-color="0,0,255,1" data-phase-shift="0" data-pattern="dot">Button 3</button>
+   <button data-frequency="10" data-dark-color="127,127,127,1" data-light-color="255,255,255,1" data-phase-shift="0" data-pattern="line">Button 4</button>
 ```
 
 ```html
@@ -60,6 +73,9 @@ Stimuli can be defined as follows for WebGL:
    </button>
    <button data-frequency="8.57" data-dark-color="255,0,0,1" data-light-color="0,0,255,1" data-phase-shift="0" data-pattern="dot">
     <span class="button-text">Button 3</span>
+   </button>
+   <button data-frequency="10" data-dark-color="127,127,127,1" data-light-color="255,255,255,1" data-phase-shift="0" data-pattern="line">
+    <span class="button-text">Button 4</span>
    </button>
 ```
 
@@ -136,7 +152,8 @@ To use the SSVEP stimuli library in a Node.js project:
   const elements = [
     { frequency: 6.67, lightColor: '255,255,255,1', darkColor: '0,0,0,1', phaseShift: 0, pattern: 'solid' },
     { frequency: 7, lightColor: '0,0,255,1', darkColor: '0,255,0,1', phaseShift: 0, pattern: 'chequered' },
-    { frequency: 8.57, lightColor: '0,0,255,1', darkColor: '255,0,0,1', phaseShift: 0, pattern: 'dot' }
+    { frequency: 8.57, lightColor: '0,0,255,1', darkColor: '255,0,0,1', phaseShift: 0, pattern: 'dot' },
+    { frequency: 10, lightColor: '255,255,255,1', darkColor: '127,127,127,1', phaseShift: 0, pattern: 'line' }
   ];
 
   const manager = new stimuli.CSS('approximation', elements.length);
@@ -166,6 +183,7 @@ To use the SSVEP stimuli library in a Node.js project:
     { frequency: 6.67, lightColor: '255,255,255,1', darkColor: '0,0,0,1', phaseShift: 0, pattern: 'solid' },
     { frequency: 7, lightColor: '0,0,255,1', darkColor: '0,255,0,1', phaseShift: 0, pattern: 'chequered' },
     { frequency: 8.57, lightColor: '0,0,255,1', darkColor: '255,0,0,1', phaseShift: 0, pattern: 'dot' }
+    { frequency: 10, lightColor: '255,255,255,1', darkColor: '127,127,127,1', phaseShift: 0, pattern: 'line' }
   ];
 
   const manager = new stimuli.WebGL('approximation', canvas, elements.length);

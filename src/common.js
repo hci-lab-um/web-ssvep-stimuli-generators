@@ -62,30 +62,31 @@ export const calculateRefreshRate = async (bufferSize = 10, samples = 10) => {
 // --------------------- Decimal.js Helpers ---------------------
 export const period = new Decimal(2).times(Decimal.acos(-1));
 
-export function countDecimals(stimulusFrequency) {
-  if (Math.floor(stimulusFrequency) === Number(stimulusFrequency))
-    return 0;
-
-  var noOfDecimalPlaces = stimulusFrequency.toString().split(".")[1].length;
-
-  if (noOfDecimalPlaces < 3)
-    return noOfDecimalPlaces;
-
-  throw "Stimuli frequencies must have less than 3 decimal places."
-}
-
 export function calculateNumberOfSeconds(stimulusFrequency) {
-  var maxSeconds = Math.pow(10, countDecimals(stimulusFrequency));
+  const maxSeconds =  20; // Reasonable upper limit (5 times the SSVEP response period (4 secs) -> 20 seconds)
+  let bestNoOfSecs = null;
+  let bestError = Number.MAX_VALUE;
 
-  for (var noOfSecs = 1; noOfSecs <= maxSeconds; noOfSecs += 1) {
+  for (let noOfSecs = 1; noOfSecs <= maxSeconds; noOfSecs++) {
+    let noOfCycles = noOfSecs * stimulusFrequency;
+    let error = Math.abs(noOfCycles - Math.round(noOfCycles)); // How close it is to an integer
 
-    var noOfCycles = new Decimal(noOfSecs).times(stimulusFrequency);
-
-    if (noOfCycles.mod(1).toNumber() === 0)
+    if (error < 1e-6) { // Small error, meaning that it is close enough
       return noOfSecs;
+    }
+
+    // Track the closest match
+    if (error < bestError) {
+      bestError = error;
+      bestNoOfSecs = noOfSecs;
+    }
   }
 
-  throw "Failed to calculate the required number of seconds.";
+  if (bestNoOfSecs !== null) {
+    return bestNoOfSecs; // Return the best match
+  }
+
+  throw new Error(`Failed to calculate the required number of seconds for frequency: ${stimulusFrequency}`);
 }
 
 export function modulus(x, y) {

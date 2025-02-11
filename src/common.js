@@ -63,19 +63,20 @@ export const calculateRefreshRate = async (bufferSize = 10, samples = 10) => {
 export const period = new Decimal(2).times(Decimal.acos(-1));
 
 export function calculateNumberOfSeconds(stimulusFrequency) {
-  const maxSeconds =  20; // Reasonable upper limit (5 times the SSVEP response period (4 secs) -> 20 seconds)
+  const maxSeconds =  20; // Reasonable upper limit -> SSVEP stimulus window should typically be < 4 seconds
   let bestNoOfSecs = null;
   let bestError = Number.MAX_VALUE;
 
   for (let noOfSecs = 1; noOfSecs <= maxSeconds; noOfSecs++) {
     let noOfCycles = noOfSecs * stimulusFrequency;
-    let error = Math.abs(noOfCycles - Math.round(noOfCycles)); // How close it is to an integer
+    let error = Math.abs(noOfCycles - Math.round(noOfCycles)); // Measuring how close it is to an integer
 
-    if (error < 1e-6) { // Small error, meaning that it is close enough
-      return noOfSecs;
+    // If the error is extremely small, we have found an ideal duration (eliminates floating point errors)
+    if (error < 1e-6) { 
+      return noOfSecs; // Return immediately as it's effectively an integer
     }
 
-    // Track the closest match
+    // Update the best match if this duration has the smallest error so far
     if (error < bestError) {
       bestError = error;
       bestNoOfSecs = noOfSecs;
@@ -86,6 +87,7 @@ export function calculateNumberOfSeconds(stimulusFrequency) {
     return bestNoOfSecs; // Return the best match
   }
 
+  // If no suitable duration is found (this should rarely happen), an error is thrown
   throw new Error(`Failed to calculate the required number of seconds for frequency: ${stimulusFrequency}`);
 }
 

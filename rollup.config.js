@@ -68,7 +68,8 @@ const config = {
         '../src/**/*.css',
         // Include the SVG files
         './src/resources/random-dot-stimuli.svg',
-        './src/resources/random-line-stimuli.svg'
+        './src/resources/random-line-stimuli.svg',
+        './src/resources/different_pattern_types.png'
       ],
       rootDir: './',
     }),

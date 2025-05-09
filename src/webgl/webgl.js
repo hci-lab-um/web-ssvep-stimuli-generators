@@ -30,11 +30,11 @@ const stimulusCoords = new Float32Array([-1.0, 1.0, 1.0, 1.0, -1.0, -1.0, 1.0, -
 
 const isPowerOfTwo = dimension => (Math.log(dimension) / Math.log(2)) % 1 === 0;
 
-export function setUpOffScreenCanvases(darkColour, lightColour) {
-	glDark.clearColor(darkColour[0], darkColour[1], darkColour[2], darkColour[3]);
+export function setUpOffScreenCanvases(darkColor, lightColor) {
+	glDark.clearColor(darkColor[0], darkColor[1], darkColor[2], darkColor[3]);
 	glDark.clear(glDark.COLOR_BUFFER_BIT);
 
-	glLight.clearColor(lightColour[0], lightColour[1], lightColour[2], lightColour[3]);
+	glLight.clearColor(lightColor[0], lightColor[1], lightColor[2], lightColor[3]);
 	glLight.clear(glLight.COLOR_BUFFER_BIT);
 
 	return { darkOffScreenCanvas: darkOffScreenCanvas, lightOffScreenCanvas: lightOffScreenCanvas };
@@ -322,7 +322,7 @@ function createLineTexture(gl, renderingInfo, flicker, rodColor, bgColor, positi
 	return texture;
 }
 
-export function setStimulusColour(gl, renderingInfo) {
+export function setStimulusColor(gl, renderingInfo) {
 	const lightColor = renderingInfo.lightColor;
 	const darkColor = renderingInfo.darkColor;
 

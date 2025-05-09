@@ -17,12 +17,12 @@ After importing the library, you can create any number of stimuli on the page us
 4. `data-phase-shift`: specifying the phase shift (frames delay) for the SSVEP stimulus
 5. `data-pattern`: specifying the flickering button's pattern. You can choose from `solid`, `dot`, `chequered` or `line` pattern types.
 
-The `data-light-colour` and `data-dark-colour` attributes define how colors are applied based on the chosen flickering pattern:  
+The `data-light-color` and `data-dark-color` attributes define how colors are applied based on the chosen flickering pattern:  
 
-- **Solid**: The stimulus alternates between `data-light-colour` and `data-dark-colour` to create a flickering effect.  
-- **Chequered**: The squares within the pattern will be displayed in `data-light-colour` and `data-dark-colour`.  
-- **Dot**: The dots will be displayed in `data-light-colour` and `data-dark-colour`, while the background remains **white**.  
-- **Line**: The **background** will be `data-dark-colour`, and the **lines** will be `data-light-colour`.  
+- **Solid**: The stimulus alternates between `data-light-color` and `data-dark-color` to create a flickering effect.  
+- **Chequered**: The squares within the pattern will be displayed in `data-light-color` and `data-dark-color`.  
+- **Dot**: The dots will be displayed in `data-light-color` and `data-dark-color`, while the background remains **white**.  
+- **Line**: The **background** will be `data-dark-color`, and the **lines** will be `data-light-color`.  
 
 The following is a sample screenshot showcasing all four `data-pattern` types in action:
 

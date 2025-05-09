@@ -86,7 +86,7 @@ export class WebGL extends SSVEP {
 
             if (elementInfo.stimulusCycle.intensities[elementInfo.counter] === 1) {
 
-                webgl.setStimulusColour(this.gl, {
+                webgl.setStimulusColor(this.gl, {
                     element: elementInfo.element,
                     coordBuffer: elementInfo.coordBuffers.lightTexCoordBuffer,
                     texCoordLoc: elementInfo.textures.texCoordLocation,
@@ -99,7 +99,7 @@ export class WebGL extends SSVEP {
 
             } else {
 
-                webgl.setStimulusColour(this.gl, {
+                webgl.setStimulusColor(this.gl, {
                     element: elementInfo.element,
                     coordBuffer: elementInfo.coordBuffers.darkTexCoordBuffer,
                     texCoordLoc: elementInfo.textures.texCoordLocation,

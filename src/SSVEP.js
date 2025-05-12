@@ -55,7 +55,7 @@ export default class SSVEP {
 
         const lightColor = el.getAttribute('data-light-color') ?? Settings.LIGHT;
         const darkColor = el.getAttribute('data-dark-color') ?? Settings.DARK;
-        // Validate colours
+        // Validate colors
         const colorPattern = /^\d+,\d+,\d+,\d+$/;
         o.light = colorPattern.test(lightColor) ? lightColor : Settings.LIGHT;
         o.dark = colorPattern.test(darkColor) ? darkColor : Settings.DARK;

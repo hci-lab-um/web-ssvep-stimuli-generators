@@ -50,8 +50,8 @@
             data-pattern="chequered">Button 2</button>
         <button data-frequency="1" data-dark-color="255,0,0,1" data-light-color="0,0,255,1" data-phase-shift="0"
             data-pattern="dot">Button 3</button>
-        <button data-frequency="8.57" data-dark-color="255,0,0,1" data-light-color="0,0,255,1" data-phase-shift="0"
-            data-pattern="line">Button 3</button>
+        <button data-frequency="8.57" data-dark-color="127,127,127,1" data-light-color="0,0,255,1" data-phase-shift="0"
+            data-pattern="line">Button 4</button>
     </div>
 
     <!-- WEBGL -->
@@ -69,33 +69,22 @@
         <span class="button-text">Button 3</span>
     </button> -->
 
-    <script type="module">
+    <!-- Prefer UMD build for direct browser usage (no bundler) -->
+    <script src="./dist/index.js"></script>
+    <script>
+        // HTML using global UMD export `stimuli`
+        const elements = document.querySelectorAll('button');
+        const manager = new stimuli.CSS('approximation', elements.length);
+        // const manager = new stimuli.CSS('periodic', elements.length);
 
-        // HTML
-        import * as stimuli from "./dist/index.js"
+        elements.forEach(el => manager.set(el));
+        manager.start();
 
-        const elements = document.querySelectorAll('button')
-
-        // ----------- CSS Methods -----------
-        const manager = new window.stimuli.CSS('approximation', elements.length)
-        // const manager = new window.stimuli.CSS('periodic', elements.length)   
-
-        elements.forEach(el => manager.set(el)) // Add Elements
-        manager.start() // Start Stimuli Generation
-
-        // WEBGL
-        // import * as stimuli from "./dist/index.js"
-
-        // const elements = document.querySelectorAll('button')
-
-        // // ----------- WebGL Methods -----------
-        // const canvas = document.body.querySelector('canvas')
-        // const manager = new window.stimuli.WebGL('approximation', canvas, elements.length)
-        // // const manager = new window.stimuli.WebGL('periodic', canvas, elements.length)
-
-        // elements.forEach(el => manager.set(el)) // Add Elements
-        // manager.start() // Start Stimuli Generation
-
+        // WEBGL (example)
+        // const canvas = document.body.querySelector('canvas');
+        // const manager = new stimuli.WebGL('approximation', canvas, elements.length);
+        // elements.forEach(el => manager.set(el));
+        // manager.start();
     </script>
 </body>
 

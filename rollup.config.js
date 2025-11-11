@@ -39,13 +39,21 @@ const config = {
     commonjs(),
     node_resolve(),
     babel({
-      babelHelpers: 'runtime',
+      babelHelpers: 'bundled',
+      presets: [
+        [
+          '@babel/preset-env',
+          {
+            targets: {
+              browsers: 'defaults'
+            }
+          }
+        ]
+      ],
       plugins: [
-        "@babel/plugin-proposal-class-properties",
-        ["@babel/plugin-transform-runtime", {
-          "regenerator": true
-        }]
-      ]
+        "@babel/plugin-proposal-class-properties"
+      ],
+      exclude: 'node_modules/**'
     }),
     css(),
     // Resolve bare module specifiers to relative paths

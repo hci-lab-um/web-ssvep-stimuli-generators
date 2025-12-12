@@ -33,7 +33,10 @@ export class CSS extends SSVEP {
         // Apply Inline Styling
         function setBackgroundColor(element, color) {
             const rgbaVals = color.split(',');
-            const rgb = rgbaVals.slice(0, 3).map(v => 255 * (v ?? 1));
+            const rgb = rgbaVals.slice(0, 3).map(v => {
+                const num = parseFloat(v ?? 1);
+                return num <= 1 ? 255 * num : num;
+            });
             element.style.backgroundColor = `rgba(${rgb},${rgbaVals?.[3] ?? 1})`;
         }
 
